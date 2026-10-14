@@ -1,0 +1,1362 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>Checklist and Procedure Trainer</title>
+<meta name="theme-color" content="#e9edf1" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0e1217" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="C172 Trainer">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="description" content="Cessna 172S G1000 checklist and maneuver trainer">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+
+<style>
+:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+body{margin:0;font:14px/1.4 -apple-system,system-ui,sans-serif;-webkit-text-size-adjust:100%;-webkit-touch-callout:none}
+button,label,.tile,.listbtn{-webkit-user-select:none;user-select:none}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one-column instrument-panel app. Placard headers, checklist rows with dot leaders, annunciator-colored state. */
+:root{
+  --bg:#e9edf1; --panel:#ffffff; --panel-2:#f3f5f8; --ink:#141a22; --muted:#5a6573; --line:#d3d9e1;
+  --amber:#b56a00; --amber-bg:#fff2dc; --green:#1d7a46; --green-bg:#e3f4ea; --red:#b3261e; --red-bg:#fde8e6;
+  --placard:#141a22; --placard-ink:#f2f4f7; --focus:#2f6fd6; --sky1:#7fb4e6; --sky2:#d9e9f7; --hill:#9bb8a0; --hill2:#b8cdb9; --runway:#5b636c;
+  --f-display:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+  --f-body:"Barlow",system-ui,-apple-system,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1217; --panel:#171c23; --panel-2:#1e242d; --ink:#e8ecf1; --muted:#8d98a6; --line:#2a313b;
+  --amber:#ffb238; --amber-bg:#3a2a0e; --green:#4fd58a; --green-bg:#13301f; --red:#ff6b5e; --red-bg:#3a1714;
+  --placard:#05070a; --placard-ink:#f2f4f7; --focus:#6aa2ff; --sky1:#13233a; --sky2:#3a5675; --hill:#1d2b25; --hill2:#26372f; --runway:#2a2f35; color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#0e1217; --panel:#171c23; --panel-2:#1e242d; --ink:#e8ecf1; --muted:#8d98a6; --line:#2a313b;
+  --amber:#ffb238; --amber-bg:#3a2a0e; --green:#4fd58a; --green-bg:#13301f; --red:#ff6b5e; --red-bg:#3a1714;
+  --placard:#05070a; --placard-ink:#f2f4f7; --focus:#6aa2ff; --sky1:#13233a; --sky2:#3a5675; --hill:#1d2b25; --hill2:#26372f; --runway:#2a2f35; color-scheme:dark;}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:640px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:16px 40px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.tail{font-family:var(--f-mono);font-size:12px;color:var(--muted);letter-spacing:.06em}
+.brand h1{font-size:30px;font-weight:700;letter-spacing:.02em;text-transform:uppercase;line-height:1}
+.brand p{margin:4px 0 0;color:var(--muted);font-size:14px}
+.placard{background:var(--placard);color:var(--placard-ink);font-family:var(--f-display);font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:13px;padding:6px 12px;border-radius:4px;display:inline-block}
+.placard.red{background:var(--red);color:#fff}
+.section{display:grid;gap:8px;margin-top:22px}
+.lists{display:grid;gap:8px}
+.listbtn{display:grid;grid-template-columns:1fr auto;gap:4px 12px;align-items:center;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;min-height:60px}
+.listbtn:active{background:var(--panel-2)}
+.listbtn .name{font-family:var(--f-display);font-size:20px;font-weight:600;letter-spacing:.01em}
+.listbtn .meta{grid-column:1;font-size:13px;color:var(--muted)}
+.listbtn .pct{grid-row:1/3;grid-column:2;font-family:var(--f-mono);font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.gauge{width:44px;height:6px;border-radius:3px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden}
+.gauge i{display:block;height:100%;background:var(--green)}
+.mem{color:var(--red);font-weight:600}
+.note{font-size:13px;color:var(--muted);margin-top:28px;border-top:1px solid var(--line);padding-top:14px}
+.speeds{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.spd{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:8px 6px;text-align:center}
+.spd b{display:block;font-family:var(--f-mono);font-size:18px;font-weight:500}
+.spd span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+@media (max-width:380px){.speeds{grid-template-columns:repeat(2,1fr)}}
+
+/* list screen */
+.hdr{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:8px 10px;display:grid;gap:10px}
+.hdr-row{display:flex;align-items:center;gap:10px}
+.back{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 12px;font-weight:600;font-size:15px}
+.hdr h2{font-size:24px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;flex:1;min-width:0;line-height:1.1}
+.seg{display:grid;grid-template-columns:repeat(3,1fr);background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:3px;gap:3px}
+.seg button{border:0;background:transparent;border-radius:7px;padding:8px 4px;font-family:var(--f-display);font-weight:600;font-size:16px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--panel);color:var(--ink);box-shadow:0 1px 2px rgba(0,0,0,.15)}
+.banner{background:var(--red-bg);color:var(--red);border-radius:8px;padding:8px 12px;font-size:14px;font-weight:600}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.row{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;width:100%;text-align:left;background:transparent;border:0;border-bottom:1px solid var(--line);padding:12px 14px}
+.row:last-child{border-bottom:0}
+.box{width:22px;height:22px;border:2px solid var(--muted);border-radius:4px;margin-top:2px;display:grid;place-items:center}
+.row.done .box{background:var(--green);border-color:var(--green)}
+.row.done .box::after{content:"";width:6px;height:11px;border:solid var(--panel);border-width:0 2.5px 2.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+.row.done .ch{color:var(--muted)}
+.line{display:flex;align-items:baseline;gap:6px;min-width:0;flex-wrap:wrap}
+.ch{font-weight:600}
+.lead{flex:1;min-width:24px;border-bottom:2px dotted var(--line);transform:translateY(-4px)}
+.rs{font-family:var(--f-mono);font-size:14px;text-transform:uppercase;text-align:right}
+.sub{font-size:13px;color:var(--muted);margin-top:2px}
+.actions{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.btn{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:10px 16px;font-weight:600}
+.btn.primary{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn.good{background:var(--green-bg);color:var(--green);border-color:transparent}
+.btn.bad{background:var(--red-bg);color:var(--red);border-color:transparent}
+.grow{flex:1}
+
+/* drill */
+.prog{display:flex;justify-content:space-between;font-family:var(--f-mono);font-size:13px;color:var(--muted)}
+.bar{height:4px;background:var(--panel-2);border-radius:2px;overflow:hidden;margin-top:6px}
+.bar i{display:block;height:100%;background:var(--amber);transition:width .25s}
+.drill{padding:20px 18px;display:grid;gap:14px}
+.step{font-family:var(--f-mono);font-size:12px;color:var(--amber);letter-spacing:.08em}
+.chal{font-family:var(--f-display);font-size:32px;font-weight:600;line-height:1.1}
+.resp{min-height:64px;border:2px dashed var(--line);border-radius:10px;display:grid;place-items:center;padding:10px;text-align:center}
+.resp.shown{border-style:solid;border-color:var(--amber);background:var(--amber-bg)}
+.resp .rs{font-size:20px;text-align:center;color:var(--ink)}
+.prev{font-size:13px;color:var(--muted)}
+.opts{display:grid;gap:8px}
+.opt{text-align:left;background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.opt .rs{font-size:13px;color:var(--muted);text-align:left}
+.opt.right{background:var(--green-bg);border-color:var(--green)}
+.opt.wrong{background:var(--red-bg);border-color:var(--red)}
+.score{text-align:center;display:grid;gap:8px;padding:28px 18px}
+.score b{font-family:var(--f-mono);font-size:44px;font-weight:500}
+.missed{text-align:left;display:grid;gap:4px;font-size:14px}
+.toggle{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted)}
+.toggle input{width:18px;height:18px;accent-color:var(--amber)}
+@media (prefers-reduced-motion:reduce){.bar i{transition:none}}
+.cond,.cond-row{font-family:var(--f-display);font-weight:600;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--amber)}
+.cond-row{background:var(--panel-2);padding:8px 14px;border-bottom:1px solid var(--line)}
+.row.memrow{box-shadow:inset 3px 0 0 var(--red)}
+.complete{display:flex;align-items:baseline;gap:6px;padding:12px 14px;font-family:var(--f-display);font-weight:700;text-transform:uppercase;letter-spacing:.04em;border-top:1px solid var(--line)}
+.complete .lead{min-width:12px}
+.seg{grid-template-columns:repeat(4,1fr)}
+.seg button{font-size:14px;white-space:nowrap;letter-spacing:.02em;padding-inline:2px}
+.panelwrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:12px;border:1px solid var(--line);margin-top:12px;background:#1b1d20}
+#panel{display:block;width:100%;min-width:900px;height:auto;touch-action:manipulation;user-select:none;-webkit-user-select:none}
+@media (min-width:900px){#panel{min-width:0}}
+#panel .ctl{cursor:pointer}
+#panel .hit{fill:transparent}
+#panel .pl{fill:#cfd5db;font-family:var(--f-body);font-weight:600;letter-spacing:.04em}
+#panel .sw .pt,#panel .sw .pb{fill:#34383d}
+#panel .sw.on .pt{fill:#e9edf1}
+#panel .sw:not(.on) .pb{fill:#8e97a1}
+#panel .sw .pt.red,#panel .sw .pb.red{fill:#4a1c1a}
+#panel .sw.on .pt.red{fill:#e04b3f}
+#panel .sw:not(.on) .pb.red{fill:#9b342c}
+#panel .tg .up{display:none}
+#panel .tg.on .up{display:inline}
+#panel .tg.on .dn{display:none}
+#panel .lamp{fill:#26302a}
+#panel .sw.on .lamp{fill:#4fd58a}
+#panel g[id$="Knob"],#panel #selPtr,#panel #keyPtr{transition:transform .35s ease}
+.fx-good{fill:rgba(79,213,138,.18);stroke:#4fd58a;stroke-width:3}
+.fx-bad{fill:rgba(255,107,94,.18);stroke:#ff6b5e;stroke-width:3}
+.fx-hint{fill:rgba(255,178,56,.15);stroke:#ffb238;stroke-width:3;animation:pulse 1.1s ease-in-out infinite}
+@keyframes pulse{50%{stroke-opacity:.25}}
+.pstatus{font-family:var(--f-mono);font-size:13px;color:var(--muted);margin-top:8px;min-height:1.4em}
+.rot{font-size:13px;color:var(--muted);margin:4px 0 8px}
+.chairc .chal{font-size:28px}
+@media (prefers-reduced-motion:reduce){.fx-hint{animation:none}#panel g[id$="Knob"],#panel #selPtr,#panel #keyPtr{transition:none}}
+.arr{display:grid;gap:10px;padding:18px}
+.slots{display:grid;gap:6px}
+.slot{display:flex;gap:10px;align-items:flex-start;text-align:left;width:100%;background:var(--panel-2);border:1px solid var(--line);border-radius:9px;padding:10px 12px;min-height:44px}
+.slot.empty{background:transparent;border-style:dashed;align-items:center}
+.slot.right{background:var(--green-bg);border-color:var(--green)}
+.slot.wrong{background:var(--red-bg);border-color:var(--red)}
+.slot .num{font-family:var(--f-mono);font-size:13px;color:var(--muted);min-width:20px;padding-top:2px}
+.slot .rs{font-size:13px}
+.fix{font-size:13px;color:var(--red);margin-top:4px;font-weight:600}
+.cond.sm{font-size:12px;letter-spacing:.03em}
+.pool-h{font-family:var(--f-display);font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:16px 0 8px;font-size:14px}
+
+/* cover */
+.cover{display:grid;gap:18px}
+.hero{position:relative;border-radius:16px;overflow:hidden;background:linear-gradient(180deg,var(--sky1),var(--sky2));border:1px solid var(--line)}
+.hero svg{display:block;width:100%;height:auto}
+.hero .tag{position:absolute;right:12px;bottom:10px;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;color:var(--placard-ink);background:rgba(10,14,20,.55);padding:4px 8px;border-radius:4px}
+.cover h1{font-family:var(--f-display);font-size:clamp(34px,9vw,52px);font-weight:700;line-height:.95;text-transform:uppercase;letter-spacing:.01em}
+.cover .kicker{font-family:var(--f-mono);font-size:12px;letter-spacing:.12em;color:var(--amber);text-transform:uppercase;margin-bottom:6px}
+.cover .lede{color:var(--muted);margin:8px 0 0;max-width:46ch}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tile{display:grid;gap:6px;text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px;min-height:118px;align-content:start}
+.tile:active{background:var(--panel-2)}
+.tile .tname{font-family:var(--f-display);font-size:22px;font-weight:700;text-transform:uppercase;letter-spacing:.02em;line-height:1}
+.tile .tmeta{font-size:13px;color:var(--muted)}
+.tile .tbar{height:5px;border-radius:3px;background:var(--panel-2);border:1px solid var(--line);overflow:hidden;margin-top:auto}
+.tile .tbar i{display:block;height:100%;background:var(--green)}
+.tile .tpct{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.tile.emer{border-color:var(--red)}
+.tile.emer .tname{color:var(--red)}
+.modes{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;font-size:12px;color:var(--muted);text-align:center}
+.modes div{background:var(--panel-2);border-radius:8px;padding:8px 4px}
+.modes b{display:block;white-space:nowrap;font-family:var(--f-display);font-size:14px;color:var(--ink);text-transform:uppercase;letter-spacing:.03em}
+@media (max-width:360px){.tiles{grid-template-columns:1fr}.modes{grid-template-columns:1fr 1fr}}
+.tile.big{min-height:0;padding:16px;gap:8px}
+.tile .ticon{color:var(--amber)}
+.tiles.two{grid-template-columns:1fr 1fr}
+.std{background:var(--amber-bg);border-radius:10px;padding:10px 14px;margin-bottom:12px;display:grid;gap:4px;font-size:14px}
+@media (max-width:480px){.tiles{grid-template-columns:1fr}}
+.callout{display:inline-block;margin-top:4px;font-style:italic;font-size:13px;color:var(--ink);background:var(--panel-2);border-left:3px solid var(--amber);padding:2px 8px;border-radius:0 4px 4px 0}
+.std b{font-weight:600}
+.tile.wide{grid-column:1/-1}
+.psum{display:flex;gap:18px;align-items:center;padding:16px;flex-wrap:wrap;margin-top:6px}
+.pstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;flex:1;min-width:200px}
+.pstats div{display:grid;gap:2px}
+.pstats b{font-family:var(--f-mono);font-weight:500;font-size:26px;font-variant-numeric:tabular-nums}
+.pstats b.k{color:var(--green)}.pstats b.m{color:var(--red)}
+.pstats span{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:10px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.legend i.k,.bar3 i.k{background:var(--green)}.legend i.m,.bar3 i.m{background:var(--red)}.legend i.u{background:var(--panel-2);border:1px solid var(--line)}
+.bar3{grid-column:1/-1;display:flex;height:6px;border-radius:3px;overflow:hidden;background:var(--panel-2);border:1px solid var(--line)}
+.bar3 i{display:block;height:100%}
+.sechead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.prog-card{padding:0}
+.pgroup{border-bottom:1px solid var(--line)}
+.pgroup:last-child{border-bottom:0}
+.pgroup summary{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:12px 14px;cursor:pointer;list-style:none}
+.pgroup summary::-webkit-details-marker{display:none}
+.pgroup summary .gname{font-family:var(--f-display);font-weight:600;font-size:18px}
+.pgroup summary .gname::before{content:"▸ ";color:var(--muted)}
+.pgroup[open] summary .gname::before{content:"▾ "}
+.prows{display:grid;padding:0 14px 10px}
+.prow{display:grid;grid-template-columns:1fr auto;gap:4px 10px;align-items:center;text-align:left;background:transparent;border:0;border-top:1px dashed var(--line);padding:8px 0}
+.prow .pname{font-size:15px;min-width:0}
+.rings{display:flex;gap:6px}
+.cur-ok{color:var(--green)!important}.cur-warn{color:var(--amber)!important}.cur-bad{color:var(--red)!important}.cur-none{color:var(--muted)!important}
+.placard.amber{background:var(--amber);color:var(--bg)}
+.curnote{margin:8px 0 0;max-width:60ch}
+</style>
+
+</head>
+<body>
+<div class="wrap" id="app"></div>
+
+<script>
+
+// Source: CESSNA 172S G1000 Checklist, Revised March 2023 (PRINT ONLY - PEA).
+// Item: [challenge, response, note?]. A string starting with "?" is a condition header for the items after it.
+// mem: number of leading items that are immediate-action (dashed box) memory items.
+const LISTS = [
+ {id:"acceptance", group:"Normal", name:"Aircraft Acceptance", items:[
+  ["NOTAMs","Check"],["Weather","Check"],["Navigation","Check"],["Weight & Balance","Check"],
+  ["Performance Calculations","Check"],["Inspection Status","Check"],["Maintenance Status","Check"],
+  ["Emergency & Safety Equipment","Check","If applicable"],["S.P.A.R.(R.)O.W.","Check"],
+  ["Tachometer","Recorded"],["Hobbs Meter","Recorded"],
+ ]},
+ {id:"cabin", group:"Normal", name:"Preflight — Cabin", items:[
+  ["Documents","Check"],["POH","Available"],["G1000 Cockpit Reference Guide","Available"],
+  ["Control Wheel Lock","Remove"],["Magneto Switch","Off"],["Avionics Switch (Bus 1 and 2)","Off"],
+  ["Circuit Breakers","Verify (In)"],["Master Switch","On"],["Flaps","Extend/30°"],
+  ["Primary Flight Display (PFD)","Check/On"],["Hobbs/Tach Time","Record"],
+  ["Exterior Lights","On/Check"],["Pitot Heat","On/Check"],["Exterior Lights","Off"],["Pitot Heat","Off"],
+  ["Fuel Quantity (L and R)","Check"],
+  ["Low Fuel L and Low Fuel R Annunciators","Check","Verify annunciators are NOT shown on PFD"],
+  ["Oil Pressure Annunciator","Check","Verify annunciator is shown"],
+  ["Low Vacuum Annunciator","Check PFD","Ensure annunciator is shown"],
+  ["Avionics Switch (Bus 1)","On"],["Forward Avionics Fan","Check/On"],["Avionics Switch (Bus 1)","Off"],
+  ["Avionics Switch (Bus 2)","On"],["Aft Avionics Fan","Check/On"],["Avionics Switch (Bus 2)","Off"],
+  ["Low Volts Annunciator","Check PFD","Verify annunciator is shown"],
+  ["Master Switch (ALT and BAT)","Off"],["Parking Brake","Release"],["Flight Controls","Free/Correct"],
+  ["Fire Extinguisher","Check/Secured"],["Fuel Selector Valve","Check/Both"],["Fuel Shutoff Valve","On (In Fully)"],
+  ["Elevator Trim","Check/Set Takeoff"],["Alternate Static Source","Check/Off (In Fully)"],
+  ["Mixture Control","Idle Cut-Off"],["Throttle","Closed"],["Avionics Master Switch","Off"],
+  ["Electrical Switches","Off"],["Beacon Light","On"],["Ignition Switch","Off"],["ELT Switch","Armed"],
+  ["Right Fuel Tank Quantity","Check"],["Engine Oil Quantity","Check"],["Left Fuel Tank Quantity","Check"],
+  ["Windows","Clean All"],["PFD/MFD","Clean"],
+ ]},
+ {id:"empennage", group:"Normal", name:"Preflight — Aft Fuselage & Empennage", items:[
+  ["Baggage Door (Lock with Key)","Closed/Locked"],["Autopilot Static Source","Check","If installed"],
+  ["Horizontal Stab./Elevator","Inspect"],["Elevator Trim Tab","Inspect"],["Vertical Stab./Rudder","Inspect"],
+  ["Static Wicks (6)","Inspect"],["Tie-Down","Remove/Secure"],["Tail-Scrape","Inspect"],["Antennas","Inspect"],
+ ]},
+ {id:"rwing", group:"Normal", name:"Preflight — Right Wing", items:[
+  ["Flap (security and condition)","Inspect"],["Aileron (freedom of movement and security)","Inspect"],
+  ["Static Wicks (2)","Inspect"],["Wingtip","Inspect"],["Landing/Taxi Light(s)","Inspect"],["Leading Edge","Inspect"],
+  ["Tie-Down","Remove/Secure"],["Chocks","Remove/Secure"],["Main Gear","Inspect"],["Rt. Fuel Sump (5)","Drain/Inspect"],
+  ["Fuel Quantity","Verify (Check)"],["Fuel Filler Cap and Vent","Secure/Inspect"],["Overhead Cabin Vent Inlets","Clear"],
+ ]},
+ {id:"fwdfuse", group:"Normal", name:"Preflight — Forward Fuselage", items:[
+  ["Cabin Air Inlet","Clear"],["Oil Quantity","Verify (Check)"],["Dipstick/Filler Cap","Secure"],
+  ["Engine Cowling","Inspect"],["Exhaust Stack","Check"],["Reservoir, Strainer, Fuel Selector (3)","Drain/Inspect"],
+  ["Propeller/Spinner","Inspect"],["Induction Inlet/Air Filter","Inspect"],["Alternator Belt","Inspect"],
+  ["Nose Gear","Inspect"],["Left Static Source","Check"],
+ ]},
+ {id:"lwing", group:"Normal", name:"Preflight — Left Wing", items:[
+  ["Lt. Fuel Sump Drains (5)","Drain/Inspected"],["Fuel Quantity","Verify (Check)"],["Fuel Filler Cap and Vent","Secure/Inspect"],
+  ["Leading Edge","Inspect"],["Overhead Cabin Vent Inlets","Clear"],["Pitot Tube","Inspect"],["Fuel Vent","Clear"],
+  ["Stall-Warning","Clear"],["Landing/Taxi Lights","Check"],["Wingtip/Lights","Inspect"],["Aileron/Flap","Inspect"],
+  ["Static Wicks (2)","Inspect"],["Tie-Down","Remove/Secure"],["Chocks","Remove/Secure"],["Main Gear","Inspect"],
+  ["360° Walk-Around","Complete"],
+ ]},
+ {id:"beforestart", group:"Normal", name:"Before Start", flow:true, items:[
+  ["Passenger/Crew Brief","Complete"],["Seats and Seatbelts/Harness","Adjust/Lock"],
+  ["Airport Diagram","Review/Keep Available"],["Fuel Selector Valve","Both"],["Fuel Shutoff Valve","On (In Fully)"],
+  ["Mixture Control","Idle Cut-Off"],["Throttle","Open ¼″"],
+  ["STBY BATT Switch","Test, then ARM","Hold 10 sec, verify green test lamp does NOT go out; ARM and verify PFD comes on"],
+  ["Engine Indicating System","Check (No Red X's)"],["BUS E Volts","Check","Verify 24 volts minimum"],
+  ["M BUS Volts","Check","Verify 1.5 volts or less"],["BATT S AMPS","Check","Verify discharge (−)"],
+  ["STBY BATT Annunciator","Verify (On)"],["Panel Lights","As Required"],["Beacon Light","Verify (On)"],
+  ["Circuit Breakers","Verify (In)"],["Parking Brake","Release"],
+ ]},
+ {id:"start", group:"Normal", name:"Engine Start", flow:true, items:[
+  ["Master Switch","On"],["Beacon Light","On"],["Prime","Complete","If necessary — see Priming/Starting"],
+  ["Prop Area","Clear","Announce loud and clear: “Clear Prop”"],["Starter","Engage"],
+  ["Mixture Control","Full Forward (Full Rich)"],["Throttle","1200 RPM"],
+  ["Oil Pressure","Check","Green arc in no more than 60 seconds"],["AMPS (M BATT and BATT S)","Check Charging"],
+  ["Low Volts Annunciator","Check"],["Mixture","Lean"],["Throttle","1000 RPM"],["Avionics Master Switch (Bus 1 and 2)","On"],
+ ]},
+ {id:"beforetaxi", group:"Normal", name:"Before Taxi & Taxi", flow:true, items:[
+  ["Instrument Cockpit Check","Complete","Compass, PFD, MFD, standby instruments, autopilot"],
+  ["Transponder","On/ALT"],["Flaps","Retract/0°"],["Parking Brake","Release"],
+  "?Taxi",
+  ["Brakes","Check"],["Nose Wheel Steering","Check"],["Magnetic Compass","Turns Freely"],
+  ["Heading Indicator","Check"],["Turn Coordinator","Check"],["Slip/Skid Indicator","Check"],
+ ]},
+ {id:"runup", group:"Normal", name:"Before Takeoff “Run-Up”", flow:true, items:[
+  ["Parking Brake","Verify/Release"],["Flight Controls","Free/Correct"],["Manual/Electric Trim","Check/Set Takeoff"],
+  ["Windows","Close"],["Fuel Selector Valve","Both"],["Mixture Control","Full Forward"],["Oil Temperature","Verify (Green)"],
+  ["Throttle","1800 RPM"],["Magnetos (175/50)","Check/Both","Max 175 RPM drop, 50 RPM difference; return to 1800 between mags"],
+  ["Engine Instruments/Annunciators","Check"],["Throttle","Idle (650 RPM) / 1000 RPM"],["Mixture","Lean"],
+ ]},
+ {id:"beforetakeoff", group:"Normal", name:"Before Takeoff", flow:true, items:[
+  ["Pre-Takeoff Briefing","Complete"],["Elevator Trim","Verify/Set Takeoff"],["Flaps","Set/Verify"],
+  ["Avionics","Set/Check"],["Flight Instruments","Set/Check"],["STBY Flight Instruments","Check"],
+  ["Fuel Quantity","Check/Verify"],["Fuel Selector Valve","Both"],["Autopilot","Off","If installed"],
+  ["Pilot and Passenger Seatbacks","Upright"],["Seats and Seatbelts/Harness","Check/Secure"],
+  ["Cabin Doors/Windows","Close/Lock"],["Cabin Power 12V","Off","If installed"],["Pitot Heat","Off (On)"],
+  ["Auxiliary Fuel Pump","Off"],["Parking Brake","Release"],["Transponder","ALT"],["Traffic","Check"],
+  "?Takeoff final items",
+  ["Fuel Selector Valve","Both"],["Fuel Shutoff Valve","On (In Fully)"],["Mixture Control","Rich (Full Forward)"],["Lights","On"],
+ ]},
+ {id:"climb", group:"Normal", name:"Climb & Cruise", flow:true, items:[
+  ["Flaps","Retract/0°"],["Airspeed","85 KIAS"],["Throttle","Full Forward"],["Elevator Trim","Adjust"],
+  ["Auxiliary Fuel Pump","Off"],["Transponder","Verify Mode"],["Mixture Control","Lean","Above 3000′ pressure altitude"],
+  ["Landing and Taxi Lights","Off"],
+  "?Cruise",
+  ["Cruise Power","Set"],["Elevator Trim","Adjust"],["Mixture Control","Lean","Above 3000′ pressure altitude"],
+  ["Engine Indicating Instruments","Check"],["Lights","As Required"],
+ ]},
+ {id:"premaneuver", group:"Normal", name:"Pre-Maneuver", items:[
+  ["Fuel Selector Valve","Both"],["Fuel Shutoff Valve","In"],["Mixture","Rich"],["ESP","As Required","If installed"],
+  ["Nav / Strobe Lights","On"],["Landing/Recognition Lights","On"],["Ignition Switch","Both"],["Seatbelts","Secured"],
+  ["Clearing Turns","Complete"],["Position Report","Complete"],
+ ]},
+ {id:"descent", group:"Normal", name:"Descent", flow:true, items:[
+  ["Approach Briefing","Complete"],["Fuel Selector Valve","Both"],["Mixture Control","Enrichen"],["Avionics","Set"],
+  ["Flight Instruments","Set"],["ESP","As Required","If installed"],["Autopilot","Off","If installed"],["Lights","On"],
+  ["Seatbelts/Harnesses","On"],["Pilot and Passenger Seatback","Upright"],["Cabin Power 12V","Off","If installed"],
+  "?Descent final items",
+  ["Fuel Selector Valve","Both"],["Elevator Trim","As Required"],["Mixture Control","Rich (Full Forward)"],["Flaps","As Required"],
+ ]},
+ {id:"afterlanding", group:"Normal", name:"After Landing & Shutdown", flow:true, items:[
+  ["Auxiliary Fuel Pump","Off"],["Lights","As Required"],["Transponder","ALT"],["Mixture Control","Lean"],
+  ["Flaps","0°/Retract"],["Elevator Trim","Check/Set Takeoff"],["Airport Diagram","Review/Keep Available"],
+  "?Shutdown",
+  ["Parking Brake","Release"],["Throttle","Idle"],["Avionics Switch","Off"],["Ignition Grounding","Check"],
+  ["Mixture Control","Idle Cut-Off"],["Ignition Switch","Off"],
+ ]},
+ {id:"secure", group:"Normal", name:"Secure & Post-Flight", items:[
+  ["Lights","Off (Beacon Light)"],["Hobbs/Tach Time and Parking","Record"],["Master Switch","Off"],
+  ["STBY BATT Switch","Off"],["Control Wheel Lock","Install"],["Fuel Selector Valve","Left"],["Parking Brake","Release"],
+  ["Trash","Remove"],["Windows/Cabin Doors","Close/Secure"],["Tie-Downs","Secure"],
+  "?Post-flight inspection",
+  ["Aft Fuselage and Empennage","Inspect"],["Tail Scrape","Inspect"],["Right Wing","Inspect"],["Right Main Gear","Check/Inspect"],
+  ["Forward Fuselage","Inspect"],["Firewall","Inspect"],["Propeller/Spinner","Inspect"],["Nose Gear","Check/Inspect"],
+  ["Left Wing","Inspect"],["Left Main Gear","Check/Inspect"],["Tie-Downs","Verify/Secured"],
+  ["Control Wheel Lock","Verify/Installed"],["Lights","Off"],["Master Switch","Off"],["Standby Batt Switch","Off"],
+  ["Windows/Cabin Doors","Closed/Secured"],
+ ]},
+
+ {id:"efroll", group:"Emergency", mem:8, name:"Engine Failure During Takeoff Roll", items:[
+  "?If sufficient runway remains for a complete stop",
+  ["Directional Control","Maintain"],["Throttle","Close Immediately"],["Brake","As Required"],
+  "?If insufficient runway remains for a complete stop",
+  ["Flaps","Verify (Retract 0°)"],["Mixture Control","Idle Cut-Off"],["Ignition Switch","Off"],["STBY BATT Switch","Off"],["Master Switch","Off"],
+ ]},
+ {id:"efafter", group:"Emergency", mem:10, name:"Engine Failure Immediately After Takeoff", items:[
+  ["Airspeed","70 KIAS Flaps Up / 65 KIAS Flaps Down"],["Throttle","Closed Immediately"],
+  ["Fuel Shutoff Valve","Off (Pull Out Fully)"],["Mixture Control","Idle Cut-Off"],["Flaps","As Required"],
+  ["Ignition Switch","Off"],["STBY BATT Switch","Off"],["Master Switch","Off"],["Cabin Doors","Unlatch"],["Land","Straight Ahead"],
+ ]},
+ {id:"efflight", group:"Emergency", mem:17, name:"Engine Failure During Flight", items:[
+  ["Airspeed","68 KIAS"],["Flaps","0°/Up"],["Landing Site","Select"],["Fuel Selector Valve","Verify Both"],
+  ["Fuel Shutoff Valve","On (In Fully)"],["Mixture Control","Full Forward"],["Auxiliary Fuel Pump","On"],["Ignition Switch","Both (Start)"],
+  "?If the engine fails to start — restart procedure",
+  ["Airspeed","68 KIAS"],["Fuel Selector Valve","Verify Both"],["Fuel Shutoff Valve","Verify On (In)"],
+  ["Mixture Control","Idle Cut-Off"],["Throttle","Full Forward"],["Auxiliary Fuel Pump","Off"],["Ignition Switch","Both/Start"],
+  "?If the engine fails to start",
+  ["Transponder","7700"],["Radio","MAYDAY"],
+  "?Continue with Emergency Landing Without Engine Power",
+  ["Passenger Seats/Seatbacks","Upright"],["Seatbelts/Harnesses","On"],["Fuel Shutoff Valve","Off (Out Fully)"],
+  ["Mixture Control","Idle Cut-Off"],["Flaps","30° Recommended"],["Ignition Switch","Off"],["STBY BATT Switch","Off"],
+  ["Master Switch","Landing Assured/Off"],["Cabin Doors","Unlatch"],["Touchdown","Slightly Tail Low"],["Brakes","Apply Heavily"],
+ ]},
+ {id:"forced", group:"Emergency", mem:12, name:"Emergency Landing Without Engine Power", items:[
+  ["Passenger Seatbacks","Upright"],["Seatbelts/Harnesses","Secure"],
+  ["Airspeed","70 KIAS Flaps Up / 65 KIAS Flaps 10°–Full"],["Mixture","Idle Cut-Off"],["Fuel Shutoff Valve","Off"],
+  ["Magnetos Switch","Off"],["Wing Flaps","As Required (Full Recommended)"],["STBY BATT Switch","Off"],["Master Switch","Off"],
+  ["Cabin Doors","Unlatch"],["Touchdown","Slightly Tail-Low"],["Brakes","Apply Heavily"],
+ ]},
+ {id:"firestart", group:"Emergency", mem:15, name:"Engine Fire During Start", items:[
+  ["Starter","Continue to Engage"],
+  "?If the engine starts",
+  ["Throttle","1800 RPM (a few minutes)"],["Mixture Control","Idle Cut-Off"],["Engine","Inspect"],
+  "?If the engine fails to start",
+  ["Starter","Continue to Engage"],["Fuel Shutoff Valve","Off (Out Fully)"],["Mixture Control","Idle Cut-Off"],
+  ["Throttle","Full Forward"],["Auxiliary Fuel Pump","Off"],["STBY BATT Switch","Off"],["Master Switch","Off"],
+  ["Ignition Switch","Off"],["Parking Brake","Release"],["Fire Extinguisher","Obtain"],["Airplane","Evacuate"],
+ ]},
+ {id:"fireflight", group:"Emergency", mem:5, name:"Engine Fire In Flight", items:[
+  ["Mixture Control","Idle Cut-Off"],["Fuel Shutoff Valve","Off (Out Fully)"],["Auxiliary Fuel Pump","Off"],
+  ["STBY BATT Switch","Off"],["Master Switch","Off"],
+  ["Cabin Air/Heat","Off"],["Airspeed","100+ KIAS / Extinguish"],["Forced Landing","Execute"],
+ ]},
+ {id:"elecfire", group:"Emergency", mem:4, name:"Electrical Fire In Flight", items:[
+  ["STBY BATT Switch","Off"],["Master Switch","Off"],["Cabin Vents, Cabin Air/Vent","Close"],["Fire Extinguisher","Obtain/Discharge"],
+  ["Avionics Master Switch","Off","After discharge and fire is out, ventilate the cabin (halon)"],
+  ["All Other Switches (except ignition)","Off"],["Cabin Vents, Cabin Air/Heat","Open"],
+  "?If fire is out and electrical power is needed to reach the nearest suitable airport",
+  ["Circuit Breakers","Check","Do not reset OPEN circuits"],["Master Switch","On"],["STBY BATT Switch","ARM"],
+  ["Avionics Master Switch","On"],["Radio/Electrical Switches","On"],
+ ]},
+ {id:"cabinfire", group:"Emergency", mem:5, name:"Cabin Fire", items:[
+  ["STBY BATT Switch","Off"],["Master Switch","Off"],["Cabin Vents","Close"],["Cabin Air/Heat","Off"],
+  ["Fire Extinguisher","Obtain/Discharge"],
+  ["Cabin Vents, Cabin Air/Heat","Open","Once fire is out, ventilate the cabin (halon)"],["Airport","Land"],
+ ]},
+ {id:"wingfire", group:"Emergency", mem:4, name:"Wing Fire", items:[
+  ["Landing/Taxi Lights","Off"],["Navigation Lights","Off"],["Strobe Lights","Off"],
+  ["Pitot Heat","Off","Forward-slip to keep flames away from the tank and cabin; land as soon as possible"],
+ ]},
+ {id:"static", group:"Emergency", mem:1, name:"Static Source Blockage", items:[
+  ["Alternate Static Source","Pull-On"],["Cabin Heat/Cabin Air","Pull-On"],["Vents","Closed"],
+  ["Airspeed","POH Calibration Table, Section 5"],
+ ]},
+ {id:"aptrim", group:"Emergency", mem:5, name:"Autopilot or Electric Trim Failure", items:[
+  ["Control Wheel","Grasp Firmly/Regain Control","Do the first two items simultaneously"],
+  ["A/P Trim Disc Switch","Depress and Hold"],["Trim","Adjust Manually"],["Autopilot Circuit Breaker","Pull"],
+  ["A/P Trim Disc Switch","Release"],
+ ]},
+ {id:"co", group:"Emergency", mem:3, name:"Carbon Monoxide Level High", items:[
+  ["Cabin Heat","Push Off"],["Cabin Air","Pull On"],["Cabin Vents","Open"],["Cabin Windows","Open"],["Airport","Land"],
+ ]},
+
+ {id:"precaution", group:"Abnormal", name:"Precautionary Landing With Engine Power", items:[
+  ["Passenger Seatbacks","Upright"],["Seatbelts/Harnesses","Secure"],["Airspeed","65 KIAS"],["Flaps","20°"],
+  ["Selected Field","Fly Over"],["Avionics Master Switch","Off"],["Electrical Switches","Off"],["Flaps","30° (On Final)"],
+  ["Airspeed","65 KIAS"],["Master Switch","Off"],["Cabin Doors","Unlatch"],["Touchdown","Slightly Tail-Low"],
+  ["Mixture","Idle Cut-Off"],["Ignition Switch","Off"],["Brakes","Apply Heavily"],
+ ]},
+ {id:"ditching", group:"Abnormal", name:"Ditching", items:[
+  ["Radio","Mayday"],["Heavy Objects","Secure or Jettison"],["Passenger Seatbacks","Upright"],
+  ["Seatbelts/Harnesses","Secure"],["Flaps","20°–Full"],
+  ["Power","Establish 300 FPM Descent @ 55 KIAS","No power: 70 KIAS flaps up, or 65 KIAS flaps 10°"],
+  "?Approach",
+  ["High Winds, Heavy Seas","Into the Wind"],["Light Winds, Heavy Swells","Parallel Swells"],
+  ["Cabin Doors","Unlatch"],["ELT","On (Active)"],["Touchdown","Level Attitude"],["Face","Cushion at Touchdown"],
+  ["Airplane","Evacuate"],["Life Vest/Raft","Inflate Clear of Airplane"],
+ ]},
+ {id:"icing", group:"Abnormal", name:"Inadvertent Icing Encounter", items:[
+  ["Pitot Heat","On"],["Altitude or Direction","Change","Seek an OAT less conducive to icing"],["Cabin Heat","On"],
+  ["Defrosters","On (Full Open)","Be alert for engine icing"],["Airport","Plan Landing"],
+  ["Flaps","0° (Up)","Expect higher stall speeds"],["Forward Slip","As Required"],["Approach Speed","65 to 75 KIAS"],
+  ["Land","Level Attitude"],
+ ]},
+ {id:"flattire", group:"Abnormal", name:"Landing With Flat Tire", items:[
+  "?Flat main tire",
+  ["Approach","Normal"],["Flaps","30°"],["Touchdown","Good Main Tire First"],["Directional Control","Maintain/Brake Good Wheel"],
+  "?Flat nose tire",
+  ["Approach","Normal"],["Flaps","As Required"],["Touchdown","On Main Gear"],["Directional Control","Maintain"],
+ ]},
+ {id:"overvolt", group:"Abnormal", name:"Electrical Malfunction — High Volts/Amps", items:[
+  "?M BUS VOLTS more than 32 or M BAT AMPS more than 40",
+  ["Alternator Switch","Off","Standby battery powers the Essential Bus at least 30 min once M BUS falls below 20 V"],
+  ["Avionics Switch (Bus 1)","Off"],["Pitot Heat","Off"],["Lights","Off"],["Cabin Power 12V","Off"],
+  ["COM 1 / NAV 1","Tune to Active Frequency"],["COM 1 MIC / NAV 1","Select","Before Bus 2 off — or radios cannot be tuned"],
+  ["Avionics Switch (Bus 2)","Off","Loses autopilot, audio panel, transponder, COM 2, NAV 2, MFD"],
+  ["Airport","Land As Soon As Practical","Do not extend flaps until landing is assured"],
+ ]},
+ {id:"lowvolts", group:"Abnormal", name:"Low Volts Illuminates In Flight", items:[
+  ["Alternator Switch","Off"],["Alternator Circuit Breaker","Check (Reset)"],["Master Switch (ALT and BAT)","On"],
+  ["Low Volts Annunciator","Checked Off"],["M BUS Volts","Check","27.5 minimum"],["M BAT AMPS","Check","Charging (+)"],
+  "?If VOLTS illuminates again or remains on",
+  ["Alternator Switch","Off"],["Avionics Switch (Bus 1)","Off"],["Pitot Heat","Off"],["Lights","Off"],["Cabin PWR 12V","Off"],
+  ["COM 1 / NAV 1","Tune to Active Frequency"],["COM 1 MIC / NAV 1","Select"],["Avionics Switch (Bus 2)","Off"],
+  ["Airport","Land","As soon as practical; no flaps until landing is assured"],
+ ]},
+ {id:"systems", group:"Abnormal", name:"G1000 System Failures", items:[
+  "?Red X — PFD airspeed",
+  ["ADC/AHRS Circuit Breakers","Check In/Reset","ESS BUS and AVN BUS 1"],["STBY Airspeed Indicator","Use"],
+  "?Red X — PFD altitude",
+  ["ADC/AHRS Circuit Breakers","Check In/Reset"],["STBY Altimeter","Set (Current Barometer)"],
+  "?Red X — PFD attitude",
+  ["ADC/AHRS Circuit Breakers","Check In/Reset"],["STBY Attitude Indicator","Use"],
+  "?Red X — HSI",
+  ["ADC/AHRS Circuit Breakers","Check In/Reset"],["Mag Compass","Use"],
+  "?PFD1 or MFD COOLING annunciator",
+  ["Cabin Heat","Reduce"],["Forward Avionics Fan","Check","Feel for airflow from the glareshield screen"],
+  "?If forward avionics fan has failed, or annunciator stays on 3 min, or both come on",
+  ["STBY BATT Switch","Off","Unless needed for emergency power"],["Land","As Soon As Practical"],
+ ]},
+ {id:"lowvac", group:"Abnormal", name:"Low Vacuum Annunciator", items:[
+  ["Vacuum Indicator (VAC)","Check","On EIS page; if out of green or gyro flag shown, don't use standby attitude"],
+ ]},
+
+ {id:"vspeeds", group:"Reference", name:"V-Speeds", items:[
+  ["VSO","40 KIAS"],["VS","48 KIAS"],["VX","62 KIAS"],["VY","74 KIAS"],["VFE 10°","110 KIAS"],
+  ["VFE 20°–30°","85 KIAS"],["VNO","129 KIAS"],["VNE","163 KIAS"],["VA 2550 lbs","105 KIAS"],
+  ["VA 2200 lbs","98 KIAS"],["VA 1900 lbs","90 KIAS"],["V Window","163 KIAS"],["Max Demonstrated Crosswind","15 Kts"],
+ ]},
+ {id:"priming", group:"Reference", name:"Priming / Starting", items:[
+  "?Cold start — oil temp below 150°F",
+  ["Auxiliary Fuel Pump","On"],["Mixture Control","Full Rich, then Cut-Off","Until fuel flow indication or 3–5 seconds"],
+  ["Auxiliary Fuel Pump","Off"],["Throttle","Open ¼″"],
+  "?Hot start — oil temp above 150°F",
+  ["Auxiliary Fuel Pump","On"],["Mixture Control","Full Rich, then Idle Cut-Off","Until fuel flow indication or 1–2 seconds; after start, mixture ⅓ then smoothly full rich"],
+  ["Auxiliary Fuel Pump","Off"],["Throttle","Open ¼″"],
+  "?Flooded engine suspected",
+  ["Auxiliary Fuel Pump","Off"],["Mixture Control","Idle Cut-Off"],["Throttle","½ to Full Forward"],["Starter","Engage"],
+  "?After engine starts",
+  ["Mixture","Full Forward (Full Rich)"],["Throttle","1000 RPM"],
+ ]},
+ {id:"fouled", group:"Reference", name:"Fouled Plug Clearing", items:[
+  ["Throttle","Smoothly 2100 RPM"],["Mixture","Lean to Peak EGT for 50 sec"],["Mixture","Full Rich"],
+  ["Throttle","Smoothly 1800 RPM"],["Magnetos","Check"],
+ ]},
+];
+// Normalize: strings become condition headers on the following items.
+LISTS.forEach(l=>{let cond=null,out=[];l.items.forEach(x=>{if(typeof x==="string")cond=x.slice(1);else out.push({ch:x[0],rs:x[1],note:x[2]||"",cond})});l.items=out;});
+// Source: CESSNA 172S MANEUVER GUIDE, Revision 11/02/2024. Item: [challenge, response, note?]; note "“…”" = verbal callout.
+const MANEUVERS = [
+ {id:"m-normto", group:"Takeoffs & Landings", name:"Normal Takeoff", std:[["Private","Airspeed −5/+10 KIAS"],["Commercial","Airspeed ±5 KIAS"]], items:[
+  ["Takeoff Checklist","Complete"],["Radio Communications","Perform"],["Line-Up","On Runway","Callout: “Runway 17L”"],
+  ["Power","Full","Right rudder as needed. Callout: “Gauges green, airspeed alive”"],["Rotate","55 KIAS","Callout: “Rotate”"],
+  ["Pitch","Vy 74 KIAS","Approximately 10° pitch"],["Climb/Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-normldg", group:"Takeoffs & Landings", name:"Normal Landing", std:[["Private","Airspeed −5/+10 KIAS · TD point −0/+400 ft"],["Commercial","Airspeed ±5 KIAS · TD point −0/+200 ft"]], items:[
+  ["Descent Checklist","Complete Before Pattern Entry"],["Before Landing Checklist","Complete"],
+  ["Downwind","1900–2100 RPM; 90 KIAS"],["Abeam TD Point","1700 RPM; 10° Flaps; 85 KIAS","Or 3 nm final"],
+  ["Base","20° Flaps; 75 KIAS","Or 2 nm final"],["Final","30° Flaps; 65 KIAS","Or 1 nm final. Add ½ gust factor"],
+  ["Throttle","Close Before Touchdown","Maintain positive pitch attitude"],
+ ]},
+ {id:"m-shortto", group:"Takeoffs & Landings", name:"Short Field Takeoff", std:[["Private","Airspeed −5/+10 KIAS"],["Commercial","Airspeed ±5 KIAS"]], items:[
+  ["Flaps","10°"],["Takeoff Checklist","Complete"],["Radio Communications","Perform"],
+  ["Line-Up","Use Max Available Runway","Callout: “Runway 17L”"],["Brakes","Hold"],
+  ["Power","Full","Right rudder as needed. Callout: “Gauges green”"],["Brakes","Release","Callout: “Airspeed alive”"],
+  ["Elevator","Slightly Tail Low"],["Lift Off","51 KIAS","Allow airplane to fly off runway. Callout: “Rotate”"],
+  ["Pitch","56 KIAS Until Over 50′ Obstacle","Callout: “50, Vx, flaps 10”"],
+  ["Pitch","Vy 74 KIAS When Clear of Obstacles","Callout: “200, Vy, flaps 0”"],["Flaps","Raise Above 200 ft"],
+  ["Climb/Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-shortldg", group:"Takeoffs & Landings", name:"Short Field Landing", std:[["Private","Airspeed −5/+10 KIAS · TD point −0/+200 ft"],["Commercial","Airspeed ±5 KIAS · TD point −0/+100 ft"]], items:[
+  ["Descent Checklist","Complete Before Pattern Entry"],["Before Landing Checklist","Complete"],
+  ["Downwind","1900–2100 RPM; 90 KIAS"],["Abeam TD Point","1700 RPM; 10° Flaps; 85 KIAS","Or 3 nm final"],
+  ["Base","20° Flaps; 75 KIAS","Or 2 nm final"],["Final","30° Flaps; 61 KIAS","Or 1 nm final. Add ½ gust factor to prevent floating"],
+  ["Throttle","Close ~200 ft Before TD Point","Minimize float; land on the TD point"],
+  ["Nose","Slowly to Runway"],["Brakes","Maximum Braking"],
+ ]},
+ {id:"m-softto", group:"Takeoffs & Landings", name:"Soft Field Takeoff", std:[["Private","Airspeed −5/+10 KIAS"],["Commercial","Airspeed ±5 KIAS"]], items:[
+  ["Flaps","10°"],["Takeoff Checklist","Complete"],["Radio Communications","Perform"],
+  ["Line-Up","Full Aft Elevator","Callout: “Runway 17L”"],
+  ["Power","Full","Right rudder; relieve some back pressure to prevent a tail strike. Callout: “Gauges green, airspeed alive”"],
+  ["Lift Off","Lowest Possible Airspeed"],["Pitch","Reduce Promptly, Ground Effect","Stay within ½ wingspan of the ground"],
+  ["Accelerate","Vx 62 KIAS"],["Climb","Vx 62 KIAS, Accelerating to Vy 74 KIAS","Callout: “Vx, climb”"],
+  ["Flaps","Raise Above 200 ft","Callout: “200, Vy, flaps 0”"],["Climb/Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-softldg", group:"Takeoffs & Landings", name:"Soft Field Landing", std:[["Private","Airspeed −5/+10 KIAS"],["Commercial","Airspeed ±5 KIAS"]], items:[
+  ["Approach Checklist","Complete Before Pattern Entry"],["Before Landing Checklist","Complete"],
+  ["Downwind","1900–2100 RPM; 90 KIAS"],["Abeam TD Point","1700 RPM; 10° Flaps; 85 KIAS","Or 3 nm final"],
+  ["Base","20° Flaps; 75 KIAS","Or 2 nm final"],["Final","30° Flaps; 65 KIAS","Or 1 nm final"],
+  ["Touchdown","Soft, Throttle At or Near Idle","Transition attitude for a soft touchdown"],
+  ["Back Pressure","Slowly to Full Elevator","Do not tail strike"],["Back Pressure","Maintain Until Off Soft Surface"],
+ ]},
+
+ {id:"m-slow", group:"Slow Flight & Stalls", name:"Slow Flight", std:[["Private","Airspeed −0/+10 KIAS · heading ±10° · altitude ±100 ft · bank ±10°"],["Commercial","Airspeed −0/+5 KIAS · heading ±10° · altitude ±50 ft · bank ±5°"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Throttle","1700 RPM","Maintain altitude"],
+  ["Flaps","Add Incrementally; Verify Landing Configuration"],["Airspeed","Just Above Stall Horn","~50 KIAS depending on weight"],
+  ["Pitch / Power","Pitch for Speed, Power for Altitude","Significant power increase may be necessary"],
+  ["Maneuver","Level, Turns, Climbs, Descents","Apply necessary rudder"],
+  "?Recovery",
+  ["Angle of Attack","Reduce"],["Power","Full"],["Flaps","10°"],
+  ["Level & Accelerate","Vx 62 or Vy 74 KIAS"],["Flaps","0° with Positive Rate"],
+  ["Altitude","Return to Starting Altitude"],["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-poweroff", group:"Slow Flight & Stalls", name:"Power-Off Stall", std:[["Private","Heading ±10° · specified bank (if any) ±10°"],["Commercial","Heading ±10° · specified bank (if any) ±5°"],["Note","Stall can be to first indication or full"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Throttle","1500 RPM","Maintain altitude"],
+  ["Flaps","Add Incrementally; Verify Landing Configuration"],["Descent","Stabilized @ 60 KIAS"],
+  ["Throttle","Idle"],["Pitch","Increase to Maintain Altitude","Apply necessary rudder"],
+  "?At stall / buffet / horn",
+  ["Angle of Attack","Reduce"],["Power","Full"],["Flaps","10°"],
+  ["Level & Accelerate","Vx 62 or Vy 74 KIAS"],["Flaps","0° with Positive Rate"],
+  ["Altitude","Return to Starting Altitude"],["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-poweron", group:"Slow Flight & Stalls", name:"Power-On Stall", std:[["Private","Heading ±10° · specified bank (if any) ±10°"],["Commercial","Heading ±10° · specified bank (if any) ±5°"],["Note","Stall can be to first indication or full"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Throttle","1500 RPM, Slow to Vr 55 KIAS","Maintain altitude"],
+  ["Configuration","Verify Takeoff Configuration"],["Pitch & Power","Increase Simultaneously (20–25° Pitch)","Apply necessary rudder"],
+  "?At stall / buffet / horn",
+  ["Angle of Attack","Reduce to Horizon"],["Accelerate","Vx 62 or Vy 74 KIAS (As Necessary)"],
+  ["Climb","To Starting Altitude","Or momentarily if above"],["Climb/Cruise Checklist","When Appropriate"],
+ ]},
+
+ {id:"m-steep", group:"Performance & Instrument", name:"Steep Turns", std:[["Private & Commercial","Airspeed ±10 KIAS · heading ±10° · altitude ±100 ft · bank ±5°"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Throttle","RPM for Level Flight at 95 KIAS"],["Visual Waypoint","Choose"],
+  ["Bank","45° Private / 50° Commercial","Aileron AND rudder; maintain altitude and airspeed with elevator/trim"],
+  ["Power","Increase to 2400 RPM"],["Roll Out","20–25° Ahead of Entry Heading","Aileron AND rudder"],
+  ["Traffic","Verify Clear"],["Bank","Roll into Opposite Direction","Smoothly and immediately for commercial"],
+  ["Roll Out","15–20° Ahead of Entry Heading"],["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-unusual", group:"Performance & Instrument", name:"Unusual Attitudes", std:[["Standard","Recognize and perform correct, coordinated, smooth control application to recover"]], items:[
+  ["Attitude Indicator","Determine Nose High or Nose Low","Cross-check altimeter, airspeed, and VSI"],
+  "?Nose high: pitch up, altitude increasing, VSI climbing, airspeed decreasing",
+  ["Power","Full"],["Nose","Lower to Horizon","Simultaneously"],["Wings","Level"],["Trim","Adjust"],
+  "?Nose low: pitch down, altitude decreasing, VSI descending, airspeed increasing",
+  ["Power","Idle"],["Wings","Level","Avoid overstressing the airframe"],["Nose","Smoothly to Horizon"],["Trim","Adjust"],
+  "?After recovery",
+  ["Cruise Checklist","When Appropriate"],
+ ]},
+
+ {id:"m-tap", group:"Ground Reference", name:"Turns Around a Point", std:[["Private","Airspeed ±10 KIAS · altitude ±100 ft"],["Note","Private only"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Ground Reference & Emergency Field","Select"],
+  ["Altitude","Descend to 800 ft AGL","ACS says 600–1000 ft"],["Throttle","RPM for Level Flight at 98 KIAS"],
+  ["Entry","On Downwind"],["Bank","Correct for Wind","High groundspeed = steep, low groundspeed = shallow"],
+  ["Exit","On Entry Heading"],["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-sturns", group:"Ground Reference", name:"S-Turns", std:[["Private","Airspeed ±10 KIAS · altitude ±100 ft"],["Note","Private only"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Ground Reference & Emergency Field","Select Reference 90° to the Wind"],
+  ["Altitude","Descend to 800 ft AGL","ACS says 600–1000 ft"],["Throttle","RPM for Level Flight at 98 KIAS"],
+  ["Entry","On Downwind"],["Bank","Correct for Wind","High groundspeed = steep, low groundspeed = shallow"],
+  ["Exit","On Entry Heading"],["Cruise Checklist","When Appropriate"],
+ ]},
+
+ {id:"m-po180", group:"Commercial", name:"Power Off 180", std:[["Commercial","TD point −0/+200 ft · a go-around is a failure per ACS"]], items:[
+  ["Approach Checklist","Complete Before Pattern Entry"],["Before Landing Checklist","Complete; Select TD Point"],
+  ["Abeam TD Point","Throttle Smoothly to Idle"],["Airspeed","Slow to Vg 68 KIAS"],
+  ["Configuration & Airspeed","Manage as Necessary","Turn earlier in wind; add flaps or forward slip to steepen descent"],
+  ["Go-Around","If Necessary","Results in a failure per ACS standards"],
+  ["Landing","No Sideload, Proper Pitch Attitude","Crosswind correction as necessary"],
+ ]},
+ {id:"m-accel", group:"Commercial", name:"Accelerated Stall", std:[["Commercial","Complete no lower than 3000 ft AGL"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Throttle","1500 RPM"],["Airspeed","Slow to 90 KIAS","Use pitch to hold altitude"],
+  ["Power","Idle"],["Bank","45° with Extensive Back Pressure"],
+  "?At first indication",
+  ["Angle of Attack","Reduce"],["Power","Full"],["Wings","Level"],["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-spiral", group:"Commercial", name:"Steep Spiral", std:[["Commercial","Bank ≤60° · airspeed ±10 KIAS · specified heading ±10° · complete no lower than 1500 ft AGL"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Flight Path","Establish Into Upwind"],["Ground Reference Point","Select"],
+  ["Power","Idle When Directly Over Point"],["Airspeed","Slow to 85 KIAS"],
+  ["Bank","Adjust to Keep Point at Fixed Distance","Up to 60° bank"],
+  ["Clear Engine","2000 RPM Momentarily After Each 360°"],["Exit","On Specified Heading, Resume Cruise"],
+  ["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-pylons", group:"Commercial", name:"Eights on Pylons", std:[["Commercial","Bank ≤40° · avoid slips and skids"],["Note","Calculate pivotal altitude before the flight"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Flight Path","~45° of Downwind; Bug Entry Heading"],
+  ["Throttle","RPM for Level Flight at 105 KIAS"],["Pivotal Altitude","Establish"],
+  ["Ground Reference Point","Select","Road, barn, small pond"],["Bank","Begin When Point Is Abeam Wing","No more than 40°"],
+  ["Pitch","Keep Point on Reference Line","Pitch smoothly"],["After ~270° Turn","Straight and Level"],
+  ["After 5–7 Seconds","Repeat to the Right"],["Roll Out","On Bugged Heading"],["Climb/Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-chandelle", group:"Commercial", name:"Chandelle", std:[["Commercial","Heading 180° ±10° · airspeed just above stall, maintained momentarily while avoiding a stall"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["Throttle","RPM for Level Flight at 105 KIAS"],["Reference","Select 90° Reference"],
+  ["Bank","30°"],["Power","Full"],["Pitch","Slowly Increase to 15–17°","Reach max pitch and hold at the 90° point"],
+  ["Bank","Slowly Reduce to 0° at 180° Point","Maintain pitch"],["Pitch","Slowly Reduce, Level and Accelerate to Cruise"],
+  ["Repeat","To the Right If Asked"],["Cruise Checklist","When Appropriate"],
+ ]},
+ {id:"m-lazy8", group:"Commercial", name:"Lazy Eight", std:[["Commercial","~30° bank at steepest · at the 180° point: airspeed ±10 KIAS, heading ±10°, altitude ±100 ft"]], items:[
+  ["Pre-Maneuver Checklist","Perform"],["References","Select 45°, 90°, and 135°"],
+  ["Configuration","Verify; RPM for Level Flight at 98 KIAS"],
+  ["Pitch & Bank","Increase 1–2° per Second","Up to ~17° pitch; speed near 60 KIAS"],
+  ["45° Point","~15° Bank, Max Pitch Up"],["Back Pressure","Relieve; Increase Bank"],["90° Point","~30° Bank, Level Pitch"],
+  ["Back Pressure","Increase Slowly; Reduce Bank","Maintain nose-low attitude"],["135° Point","~15° Bank, Max Pitch Down"],
+  ["180° Point","Level at Entry Altitude, Airspeed, Reciprocal Heading"],
+  ["Repeat","Other Direction, Smoothly and Immediately"],["Cruise Checklist","When Appropriate"],
+ ]},
+
+];
+MANEUVERS.forEach(l=>{let cond=null,out=[];l.items.forEach(x=>{if(typeof x==="string")cond=x.slice(1);else out.push({ch:x[0],rs:x[1],note:x[2]||"",cond})});l.items=out;l.man=true;});
+LISTS.push(...MANEUVERS);
+
+// ───────── Chair Fly: drawn panel, control mapping, panel state ─────────
+const NAMES = {alt:"Alternator (ALT) switch",bat:"Battery (BAT) switch",master:"Master switch",stbybatt:"Standby battery switch",
+ fuelpump:"Aux fuel pump switch",bcn:"Beacon switch",land:"Landing light switch",taxi:"Taxi light switch",nav:"Nav lights switch",
+ strobe:"Strobe switch",pitot:"Pitot heat switch",av1:"Avionics Bus 1",av2:"Avionics Bus 2",avionics:"Avionics switches",
+ swrow:"Switch panel",ignition:"Ignition / magneto switch",cb:"Circuit breaker panel",throttle:"Throttle",mixture:"Mixture",
+ flaps:"Flap lever",altstatic:"Alternate static source",trim:"Elevator trim wheel",fuelsel:"Fuel selector valve",
+ shutoff:"Fuel shutoff valve",pbrake:"Parking brake",yoke:"Control wheel",apdisc:"A/P trim disconnect",etrim:"Electric trim switch",
+ pedals:"Rudder pedals / brakes",compass:"Magnetic compass",pfd:"PFD",pfdkeys:"PFD softkeys (transponder)",audio:"Audio panel",
+ mfd:"MFD",eis:"Engine indication (EIS)",ap:"Autopilot",stby:"Standby instruments",stbyasi:"Standby airspeed",
+ stbyai:"Standby attitude",stbyalt:"Standby altimeter",hobbs:"Hobbs meter",elt:"ELT switch",pwr12:"Cabin 12V power switch",
+ panellt:"Panel light dimmers",cabinheat:"Cabin heat knob",cabinair:"Cabin air knob"};
+
+const RULES = [
+ [/^alternator switch/,["alt"]],
+ [/alternator circuit|circuit breaker|adc\/ahrs|autopilot circuit/,["cb"]],
+ [/stby batt|standby batt/,["stbybatt"]],
+ [/^master switch/,["master"]],
+ [/avionics switch \(bus 1\)/,["av1"]],[/avionics switch \(bus 2\)/,["av2"]],
+ [/avionics master|avionics switch/,["avionics"]],
+ [/auxiliary fuel pump|^fuel pump/,["fuelpump"]],
+ [/beacon/,["bcn"]],
+ [/landing\/taxi|landing and taxi/,["land","taxi"]],[/landing\/recognition/,["land"]],
+ [/nav \/ strobe/,["nav","strobe"]],[/navigation lights/,["nav"]],[/^strobe/,["strobe"]],
+ [/^lights|exterior lights/,["bcn","land","taxi","nav","strobe"]],
+ [/pitot heat/,["pitot"]],
+ [/electrical switches|all other switches|radio\/electrical/,["swrow"]],
+ [/panel lights/,["panellt"]],
+ [/magneto|ignition switch|ignition grounding|^starter/,["ignition"]],
+ [/mixture/,["mixture"]],
+ [/^throttle|cruise power|descent power|^power$/,["throttle"]],
+ [/fuel shut ?off/,["shutoff"]],
+ [/fuel selector/,["fuelsel"]],
+ [/flaps/,["flaps"]],
+ [/parking brake/,["pbrake"]],
+ [/^brakes?$|directional control|nose wheel steering/,["pedals"]],
+ [/a\/p trim disc/,["apdisc"]],
+ [/manual\/electric trim/,["etrim","trim"]],
+ [/elevator trim|^trim$/,["trim"]],
+ [/control wheel|flight controls/,["yoke"]],
+ [/transponder/,["pfdkeys"]],
+ [/^autopilot$/,["ap"]],
+ [/alternate static/,["altstatic"]],
+ [/cabin heat\/cabin air|cabin air\/heat|cabin ht/,["cabinheat","cabinair"]],[/^cabin heat/,["cabinheat"]],[/^cabin air/,["cabinair"]],[/defroster/,["cabinheat"]],
+ [/cabin power|cabin pwr/,["pwr12"]],
+ [/^elt/,["elt"]],
+ [/hobbs/,["hobbs"]],
+ [/magnetic compass|mag compass/,["compass"]],
+ [/stby airspeed/,["stbyasi"]],[/stby altimeter/,["stbyalt"]],[/stby attitude/,["stbyai"]],[/stby flight instruments/,["stby"]],
+ [/com 1 mic|^radio$/,["audio","yoke"]],[/com 1 \/ nav 1/,["pfd","audio"]],
+ [/annunciator|primary flight display|flight instruments|heading indicator|turn coordinator|slip\/skid|instrument cockpit/,["pfd"]],
+ [/^airspeed|approach speed/,["pfd","stbyasi"]],
+ [/engine indicating|engine instruments|^oil pressure$|oil temp|bus e volts|m bus|batt s amps|m bat amps|amps \(|vacuum indicator|^fuel quantity \(|^fuel quantity$|^cruise/,["eis"]],
+ [/pfd\/mfd/,["pfd","mfd"]],[/^avionics$/,["pfd","mfd","audio"]],[/^traffic/,["mfd"]],
+];
+const WALK = new Set(["acceptance","empennage","rwing","fwdfuse","lwing"]);
+const COLD = new Set(["acceptance","cabin","empennage","rwing","fwdfuse","lwing","beforestart","start"]);
+function controlFor(l,it){
+  if(WALK.has(l.id)) return null;
+  if(l.id==="secure" && it.cond) { if(!/master|standby batt|^lights|control wheel/i.test(it.ch)) return null; }
+  if(l.id==="cabin" && /tank quantity|oil quantity/i.test(it.ch)) return null;
+  const c=it.ch.toLowerCase();
+  for(const [re,ids] of RULES) if(re.test(c)) return ids;
+  return null;
+}
+
+const SW_IDS=["alt","bat","stbybatt","fuelpump","bcn","land","taxi","nav","strobe","pitot","pwr12","av1","av2"];
+let ps;
+function panelReset(l){
+  const cold=COLD.has(l.id);
+  ps={alt:false,bat:false,stbybatt:false,fuelpump:false,bcn:!cold,land:false,taxi:false,nav:!cold,strobe:!cold,pitot:false,pwr12:false,av1:!cold,av2:!cold,
+      thr:cold?1:.35,mix:cold?1:.15,flaps:0,sel:"both",shutoff:"in",key:cold?"off":"both",pbrake:cold?"set":"rel",lock:l.id==="cabin"||l.id==="acceptance"};
+  if(!cold){ps.alt=ps.bat=true;ps.stbybatt=true}
+  if(l.id==="beforestart"||l.id==="start") ps.lock=false;
+  if(l.id==="secure"){Object.assign(ps,{alt:true,bat:true,stbybatt:true,av1:false,av2:false,thr:1,mix:1,key:"off",pbrake:"rel"})}
+  if(l.id==="runup"||l.id==="beforetakeoff"||l.id==="afterlanding") {ps.pbrake=l.id==="afterlanding"?"rel":"set";ps.thr=.8}
+}
+function applyEffect(it,ids){
+  const r=it.rs.toLowerCase();
+  const on=/^(on|arm|test|check\/on|verify \(on\)|armed)/.test(r), off=/^off|checked off/.test(r);
+  const setSw=(arr,v)=>arr.forEach(k=>{if(k in ps) ps[k]=v});
+  const expand=id=>id==="master"?["alt","bat"]:id==="avionics"?["av1","av2"]:id==="swrow"?["fuelpump","bcn","land","taxi","nav","strobe","pitot","pwr12","av1","av2"]:[id];
+  const swTargets=ids.flatMap(expand).filter(k=>SW_IDS.includes(k));
+  if(swTargets.length&&(on||off)) setSw(swTargets,on);
+  if(ids.includes("elt")) ps.elt=true;
+  if(ids.includes("throttle")){
+    let v=null; const rpm=r.match(/(\d{3,4}) rpm/);
+    if(/^idle \(650/.test(r)) v=.8; else if(/full forward|^full$|½ to full/.test(r)) v=/½/.test(r)?.25:0;
+    else if(/closed|close|^idle/.test(r)) v=1; else if(/open ¼/.test(r)) v=.9;
+    else if(rpm) v=Math.min(1,Math.max(0,1-(+rpm[1]-600)/2100)); else if(/^set|establish/.test(r)) v=.4;
+    if(v!==null) ps.thr=v;
+  }
+  if(ids.includes("mixture")){
+    if(/cut-?off/.test(r)) ps.mix=1; else if(/^lean/.test(r)) ps.mix=.35; else if(/rich|full forward|enrichen/.test(r)) ps.mix=0;
+  }
+  if(ids.includes("flaps")){
+    const n=r.match(/(\d+)°/); if(n) ps.flaps=Math.min(30,+n[1]); else if(/full/.test(r)) ps.flaps=30; else if(/retract|up/.test(r)) ps.flaps=0;
+  }
+  if(ids.includes("fuelsel")){ if(/both/.test(r)) ps.sel="both"; else if(/left/.test(r)) ps.sel="left"; else if(/right/.test(r)) ps.sel="right"; }
+  if(ids.includes("shutoff")){ if(/off|out/.test(r)) ps.shutoff="out"; else if(/on|in/.test(r)) ps.shutoff="in"; }
+  if(ids.includes("ignition")){
+    if(/^off/.test(r)) ps.key="off";
+    else if(/start|engage/.test(r)&&!/^both/.test(r)){ps.key="start";drawPanel();setTimeout(()=>{ps.key="both";drawPanel()},700);return}
+    else if(/both/.test(r)) ps.key="both";
+  }
+  if(ids.includes("pbrake")){ if(/release/.test(r)) ps.pbrake="rel"; else if(/set/.test(r)) ps.pbrake="set"; }
+  if(ids.includes("yoke")&&/lock/i.test(it.ch)){ if(/remove/.test(r)) ps.lock=false; else if(/install/.test(r)) ps.lock=true; }
+  drawPanel();
+}
+function drawPanel(){
+  const svg=document.getElementById("panel"); if(!svg) return;
+  SW_IDS.forEach(k=>{const g=svg.querySelector(`[data-c="${k}"]`); if(g) g.classList.toggle("on",!!ps[k])});
+  const q=id=>svg.querySelector("#"+id);
+  q("thrKnob").setAttribute("transform",`translate(0 ${ps.thr*40})`);
+  q("thrShaft").setAttribute("height",4+ps.thr*40);
+  q("mixKnob").setAttribute("transform",`translate(0 ${ps.mix*40})`);
+  q("mixShaft").setAttribute("height",4+ps.mix*40);
+  q("flapKnob").setAttribute("transform",`translate(0 ${ps.flaps/30*54})`);
+  q("selPtr").setAttribute("transform",`rotate(${ {left:-60,both:0,right:60}[ps.sel]} 500 712)`);
+  q("shutKnob").setAttribute("transform",`translate(0 ${ps.shutoff==="out"?9:0})`);
+  q("shutStem").style.opacity=ps.shutoff==="out"?1:0;
+  q("keyPtr").setAttribute("transform",`rotate(${ {off:-60,r:-30,l:0,both:30,start:62}[ps.key]} 62 466)`);
+  q("pbKnob").setAttribute("transform",`translate(0 ${ps.pbrake==="set"?10:0})`);
+  q("lockPin").style.display=ps.lock?"":"none";
+}
+
+function panelSVG(){
+  const lab=(x,y,t,a="middle",s=7)=>`<text x="${x}" y="${y}" text-anchor="${a}" class="pl" font-size="${s}">${t}</text>`;
+  // Rocker (master / avionics halves)
+  const rk=(id,x,y,t,red)=>`<g class="ctl sw" data-c="${id}"><rect class="hit" x="${x-3}" y="${y-4}" width="${26}" height="52"/>
+    <rect x="${x}" y="${y}" width="20" height="34" rx="2" fill="#141618" stroke="#000"/>
+    <rect class="pt ${red?"red":""}" x="${x+3}" y="${y+3}" width="14" height="14" rx="1.5"/><rect class="pb ${red?"red":""}" x="${x+3}" y="${y+17}" width="14" height="14" rx="1.5"/>
+    ${lab(x+10,y+44,t,"middle",6.5)}</g>`;
+  // Toggle switch: lever up = on
+  const tg=(id,x,y,t)=>`<g class="ctl sw tg" data-c="${id}"><rect class="hit" x="${x-13}" y="${y-14}" width="26" height="36"/>
+    <circle cx="${x}" cy="${y}" r="6.5" fill="#d9dde1" stroke="#7d848c"/>
+    <g class="up"><line x1="${x}" y1="${y}" x2="${x}" y2="${y-10}" stroke="#f4f6f8" stroke-width="3.5" stroke-linecap="round"/></g>
+    <g class="dn"><line x1="${x}" y1="${y}" x2="${x}" y2="${y+10}" stroke="#f4f6f8" stroke-width="3.5" stroke-linecap="round"/></g>
+    ${lab(x,y+20,t,"middle",6)}</g>`;
+  const keys=(x0,n=12)=>{let s="";for(let k=0;k<n;k++)s+=`<rect x="${x0+k*18}" y="302" width="13" height="7" rx="1.5" fill="#34383d"/>`;return s};
+  const bezelKnobs=x=>[128,175,222,268].map(y=>`<circle cx="${x}" cy="${y}" r="5" fill="#2c3035" stroke="#4a4f55"/>`).join("");
+  const cbBlock=(x0,cols,rows)=>{let s="";for(let r=0;r<rows;r++)for(let c=0;c<cols;c++)s+=`<circle cx="${x0+12+c*25}" cy="${444+r*22}" r="6" fill="#0d0e10" stroke="#6a7078"/>`;return s};
+  let aud="";for(let r=0;r<10;r++)for(let c=0;c<2;c++)aud+=`<rect x="${422+c*17}" y="${110+r*20}" width="13" height="12" rx="2" fill="#34383d"/>`;
+  let apk="";for(let k=0;k<8;k++)apk+=`<rect x="${470}" y="${132+k*18}" width="12" height="11" rx="2" fill="#34383d"/>`;
+  let trimLines="";for(let k=0;k<14;k++)trimLines+=`<line x1="445" x2="461" y1="${536+k*8}" y2="${536+k*8}" stroke="#3a3e43" stroke-width="2"/>`;
+  const vent=(cx,cy)=>`<circle cx="${cx}" cy="${cy}" r="20" fill="#1a1c1f" stroke="#454b52" stroke-width="3"/><circle cx="${cx}" cy="${cy}" r="8" fill="#0d0e10"/>`;
+  return `<svg id="panel" viewBox="0 0 1000 760" role="img" aria-label="Simplified Cessna 172S G1000 instrument panel">
+  <defs><clipPath id="pfdclip"><rect x="172" y="114" width="216" height="178"/></clipPath><clipPath id="aiclip"><circle cx="530" cy="368" r="27"/></clipPath></defs>
+  <rect x="0" y="0" width="1000" height="760" fill="#17191c"/>
+  <rect x="30" y="72" width="940" height="350" rx="8" fill="#5f6973"/>
+  <path d="M40 150 C40 78 90 64 170 64 H830 C910 64 960 78 960 150" stroke="#0f1012" stroke-width="20" fill="none" stroke-linecap="round"/>
+  <g class="ctl" data-c="compass"><rect class="hit" x="472" y="0" width="56" height="62"/><rect x="494" y="38" width="12" height="20" fill="#0f1012"/><rect x="478" y="6" width="44" height="34" rx="5" fill="#16181b"/><rect x="484" y="13" width="32" height="18" rx="2" fill="#e8ebee"/><text x="500" y="26" text-anchor="middle" font-size="9" fill="#111" font-family="monospace">33 N 3</text></g>
+
+  <g class="ctl" data-c="pfd"><rect x="150" y="100" width="260" height="218" rx="6" fill="#1c1e21"/>${bezelKnobs(160)}${bezelKnobs(400)}
+   <g clip-path="url(#pfdclip)"><rect x="172" y="114" width="216" height="92" fill="#2f78c8"/><rect x="172" y="206" width="216" height="86" fill="#8a5a2b"/>
+    <line x1="172" x2="388" y1="206" y2="206" stroke="#fff" stroke-width="1.5"/>
+    <path d="M190 150 A100 100 0 0 1 370 150" stroke="#fff" stroke-width="1" fill="none"/>
+    <path d="M258 206h16l8 7 8-7h16" stroke="#ffd400" stroke-width="4" fill="none"/>
+    <rect x="178" y="130" width="34" height="120" fill="rgba(0,0,0,.45)"/><text x="195" y="210" text-anchor="middle" font-size="12" fill="#fff" font-family="monospace">95</text>
+    <rect x="344" y="130" width="40" height="120" fill="rgba(0,0,0,.45)"/><text x="364" y="210" text-anchor="middle" font-size="11" fill="#fff" font-family="monospace">3500</text>
+    <circle cx="280" cy="300" r="48" fill="#1a1c1f" stroke="#fff" stroke-width="1"/><text x="280" y="268" text-anchor="middle" font-size="9" fill="#fff" font-family="monospace">360</text></g>
+   ${lab(280,96,"PFD","middle",8)}
+   <g class="ctl" data-c="pfdkeys"><rect class="hit" x="172" y="296" width="216" height="18"/>${keys(176)}</g></g>
+
+  <g class="ctl" data-c="audio"><rect class="hit" x="414" y="100" width="48" height="218"/><rect x="417" y="100" width="42" height="218" rx="5" fill="#1c1e21"/>${aud}${lab(438,96,"AUDIO","middle",7)}</g>
+
+  <g class="ctl" data-c="mfd"><rect x="466" y="100" width="260" height="218" rx="6" fill="#1c1e21"/>${bezelKnobs(716)}
+   <rect x="540" y="114" width="164" height="178" fill="#0b1f33"/>
+   <path d="M560 140q30 40 60 30t50 40 20 60" stroke="#2a5d8f" stroke-width="18" fill="none" opacity=".7"/>
+   <circle cx="625" cy="205" r="60" stroke="#e040fb" stroke-width="2" fill="none"/>
+   <polygon points="625,198 619,212 631,212" fill="#fff"/>
+   ${lab(596,96,"MFD","middle",8)}
+   <g class="ctl" data-c="eis"><rect x="488" y="114" width="52" height="178" fill="#0b0c0e"/>
+    ${["RPM","FFLOW","OIL PRES","OIL TEMP","EGT","VAC","FUEL QTY","M BUS","M BAT"].map((t,k)=>`<text x="491" y="${127+k*19}" font-size="6" fill="#cfd5db" font-family="sans-serif">${t}</text><rect x="491" y="${130+k*19}" width="45" height="3" fill="#2b2f33"/><rect x="491" y="${130+k*19}" width="${18+(k*13)%24}" height="3" fill="#36c46b"/>`).join("")}</g>
+   ${keys(492)}
+   <g class="ctl" data-c="ap"><rect class="hit" x="466" y="126" width="22" height="150"/>${apk}${lab(476,126,"AP","middle",6)}</g></g>
+
+  <rect x="34" y="190" width="110" height="136" rx="4" fill="#4b545d"/>
+  <g class="ctl sw tg" data-c="stbybatt"><rect class="hit" x="60" y="200" width="66" height="44"/>
+   ${lab(89,203,"STBY BATT","middle",6.5)}<circle class="lamp" cx="116" cy="222" r="4"/>
+   <circle cx="89" cy="226" r="6.5" fill="#d9dde1" stroke="#7d848c"/>
+   <g class="up"><line x1="89" y1="226" x2="89" y2="216" stroke="#f4f6f8" stroke-width="3.5" stroke-linecap="round"/></g>
+   <g class="dn"><line x1="89" y1="226" x2="89" y2="236" stroke="#f4f6f8" stroke-width="3.5" stroke-linecap="round"/></g>
+   ${lab(72,219,"ARM","end",5.5)}${lab(72,240,"TEST","end",5.5)}</g>
+  <g class="ctl" data-c="master">${lab(60,258,"MASTER","middle",6.5)}${rk("alt",40,262,"ALT",true)}${rk("bat",62,262,"BAT",true)}</g>
+
+  <rect x="34" y="334" width="236" height="82" rx="4" fill="#2b2f34"/>
+  <g class="ctl" data-c="panellt"><rect class="hit" x="38" y="338" width="72" height="74"/>${lab(70,346,"DIMMING","middle",6)}
+   <circle cx="54" cy="364" r="9" fill="#0d0e10" stroke="#6a7078"/><circle cx="88" cy="364" r="9" fill="#0d0e10" stroke="#6a7078"/>
+   <circle cx="54" cy="396" r="9" fill="#0d0e10" stroke="#6a7078"/><circle cx="88" cy="396" r="9" fill="#0d0e10" stroke="#6a7078"/></g>
+  <g class="ctl" data-c="swrow">
+   <g class="ctl" data-c="avionics">${lab(114,258,"AVIONICS","middle",6.5)}${rk("av1",94,262,"BUS 1")}${rk("av2",116,262,"BUS 2")}</g>
+   ${tg("bcn",128,358,"BCN")}${tg("land",156,358,"LAND")}${tg("taxi",184,358,"TAXI")}${tg("nav",212,358,"NAV")}${tg("strobe",240,358,"STROBE")}
+   ${tg("fuelpump",128,392,"FUEL PUMP")}${tg("pitot",176,392,"PITOT HT")}${tg("pwr12",226,392,"CABIN 12V")}</g>
+
+  ${vent(318,372)}${vent(800,372)}
+  <g class="ctl" data-c="stby">
+   <g class="ctl" data-c="stbyasi"><rect class="hit" x="414" y="332" width="72" height="72"/><circle cx="450" cy="368" r="32" fill="#0b0c0d" stroke="#2c3035" stroke-width="3"/><path d="M428 350 A28 28 0 0 1 474 356" stroke="#36c46b" stroke-width="4" fill="none"/><path d="M474 356 A28 28 0 0 1 477 376" stroke="#e8c400" stroke-width="4" fill="none"/><line x1="450" y1="368" x2="472" y2="352" stroke="#fff" stroke-width="2"/></g>
+   <g class="ctl" data-c="stbyai"><rect class="hit" x="494" y="332" width="72" height="72"/><circle cx="530" cy="368" r="32" fill="#0b0c0d" stroke="#2c3035" stroke-width="3"/><g clip-path="url(#aiclip)"><rect x="500" y="338" width="60" height="30" fill="#2f78c8"/><rect x="500" y="368" width="60" height="30" fill="#8a5a2b"/></g><path d="M514 370h10l6 5 6-5h10" stroke="#ffd400" stroke-width="3" fill="none"/></g>
+   <g class="ctl" data-c="stbyalt"><rect class="hit" x="574" y="332" width="72" height="72"/><circle cx="610" cy="368" r="32" fill="#0b0c0d" stroke="#2c3035" stroke-width="3"/><line x1="610" y1="368" x2="610" y2="343" stroke="#fff" stroke-width="2"/><line x1="610" y1="368" x2="626" y2="376" stroke="#fff" stroke-width="3"/></g></g>
+
+  <g class="ctl" data-c="elt"><rect class="hit" x="770" y="112" width="42" height="50"/><rect x="778" y="118" width="26" height="34" rx="3" fill="#2b2f34"/><rect x="785" y="124" width="12" height="16" rx="2" fill="#c62828"/>${lab(791,160,"ELT","middle",6.5)}</g>
+  <g class="ctl" data-c="hobbs"><rect class="hit" x="822" y="112" width="70" height="50"/><rect x="826" y="118" width="62" height="26" rx="3" fill="#121416"/><text x="857" y="135" text-anchor="middle" font-size="10" fill="#f2f4f7" font-family="monospace">1842.6</text>${lab(857,156,"HOBBS","middle",6.5)}</g>
+
+  <rect x="30" y="424" width="940" height="92" rx="4" fill="#2b2f34"/>
+  <g class="ctl" data-c="ignition"><rect class="hit" x="32" y="430" width="62" height="78"/><circle cx="62" cy="466" r="17" fill="#d9dde1" stroke="#7d848c" stroke-width="2"/>
+   <g id="keyPtr"><rect x="58" y="451" width="8" height="30" rx="2.5" fill="#33373c"/></g>
+   ${lab(40,452,"OFF","end",5.5)}${lab(48,440,"R","middle",5.5)}${lab(62,436,"L","middle",5.5)}${lab(76,440,"BOTH","start",5.5)}${lab(84,452,"START","start",5.5)}${lab(62,500,"MAGNETOS","middle",6)}</g>
+  <g class="ctl" data-c="cb"><rect class="hit" x="98" y="430" width="300" height="80"/>
+   <rect x="100" y="432" width="155" height="76" rx="3" fill="#212428" stroke="#3d4248"/>${cbBlock(102,6,3)}
+   <rect x="262" y="432" width="134" height="76" rx="3" fill="#212428" stroke="#3d4248"/>${cbBlock(264,5,3)}${lab(250,516,"CIRCUIT BREAKERS","middle",6)}</g>
+  <g class="ctl" data-c="altstatic"><rect class="hit" x="408" y="430" width="38" height="56"/><circle cx="426" cy="450" r="10" fill="#c62828" stroke="#e5e7ea" stroke-width="2"/>${lab(426,474,"ALT STATIC","middle",5.5)}${lab(426,481,"PULL ON","middle",5.5)}</g>
+  <circle cx="458" cy="454" r="6" fill="#0d0e10" stroke="#6a7078"/>
+  ${lab(488,436,"THROTTLE","middle",6)}${lab(552,436,"MIXTURE","middle",6)}
+  <g class="ctl" data-c="throttle"><rect class="hit" x="464" y="430" width="48" height="86"/><rect id="thrShaft" x="485" y="452" width="6" height="4" fill="#8f969e"/><g id="thrKnob"><circle cx="488" cy="454" r="16" fill="#e8ebee" stroke="#6a7078" stroke-width="2"/><circle cx="488" cy="454" r="8" fill="#cfd4d9"/></g></g>
+  <g class="ctl" data-c="mixture"><rect class="hit" x="530" y="430" width="44" height="86"/><rect id="mixShaft" x="549" y="452" width="6" height="4" fill="#8f969e"/><g id="mixKnob"><circle cx="552" cy="454" r="14" fill="#c62828" stroke="#e5e7ea" stroke-width="2"/><circle cx="552" cy="454" r="6" fill="#a11f1f"/></g></g>
+  <g class="ctl" data-c="flaps"><rect class="hit" x="620" y="428" width="70" height="88"/>${lab(645,436,"WING FLAPS","middle",6)}<rect x="628" y="442" width="8" height="66" rx="3" fill="#0a0b0c"/>
+   ${["0°","10°","20°","FULL"].map((t,k)=>lab(654,450+k*18,t,"start",6.5)).join("")}
+   <g id="flapKnob"><rect x="620" y="440" width="26" height="12" rx="3" fill="#e8ebee" stroke="#6a7078"/></g></g>
+  <g class="ctl" data-c="cabinheat"><rect class="hit" x="708" y="430" width="70" height="38"/><circle cx="726" cy="448" r="11" fill="#e8ebee" stroke="#6a7078" stroke-width="2"/>${lab(744,447,"CABIN HT","start",6)}${lab(744,455,"PULL ON","start",5.5)}</g>
+  <g class="ctl" data-c="cabinair"><rect class="hit" x="708" y="470" width="70" height="40"/><circle cx="726" cy="488" r="11" fill="#e8ebee" stroke="#6a7078" stroke-width="2"/>${lab(744,487,"CABIN AIR","start",6)}${lab(744,495,"PULL ON","start",5.5)}</g>
+  <rect x="800" y="432" width="160" height="76" rx="6" fill="#24272b" stroke="#3d4248"/><rect x="872" y="462" width="16" height="6" rx="2" fill="#3d4248"/>
+
+  <g class="ctl" data-c="pbrake"><rect class="hit" x="258" y="516" width="84" height="46"/><rect x="306" y="516" width="8" height="12" fill="#0f1012"/><g id="pbKnob"><rect x="270" y="524" width="62" height="12" rx="3" fill="#0f1012" stroke="#3d4248"/></g>${lab(300,558,"PARKING BRAKE","middle",6)}</g>
+
+  <rect x="430" y="516" width="140" height="244" fill="#2b2f34"/>
+  <g class="ctl" data-c="trim"><rect class="hit" x="436" y="520" width="42" height="140"/><rect x="442" y="530" width="22" height="116" rx="6" fill="#0f1012"/>${trimLines}
+   ${lab(453,527,"NOSE DN","middle",5.5)}${lab(453,656,"NOSE UP","middle",5.5)}<path d="M468 600 l7 -4 v8 z" fill="#e8ebee"/>${lab(478,602,"T/O","start",5.5)}</g>
+  <rect x="510" y="540" width="20" height="54" rx="9" fill="#111"/><path d="M520 594 q0 20 18 30" stroke="#111" stroke-width="3" fill="none"/>
+  <circle cx="488" cy="652" r="8" fill="#111" stroke="#555"/>${lab(488,670,"POWER","middle",5.5)}
+  <g class="ctl" data-c="shutoff"><rect class="hit" x="516" y="628" width="48" height="50"/><rect id="shutStem" x="537" y="648" width="6" height="10" fill="#8f969e"/><g id="shutKnob"><circle cx="540" cy="648" r="9" fill="#c62828" stroke="#e5e7ea" stroke-width="2"/></g>${lab(540,672,"FUEL SHUTOFF","middle",5.5)}${lab(540,679,"PULL OFF","middle",5.5)}</g>
+  <g class="ctl" data-c="fuelsel"><rect class="hit" x="458" y="680" width="84" height="80"/><rect x="456" y="684" width="88" height="72" rx="4" fill="#1a1c1f"/>
+   ${lab(470,710,"LEFT","middle",6)}${lab(500,694,"BOTH","middle",6)}${lab(530,710,"RIGHT","middle",6)}
+   <g id="selPtr"><path d="M496 712 L500 696 L504 712 Z" fill="#e8ebee"/><rect x="492" y="708" width="16" height="30" rx="5" fill="#e8ebee"/></g></g>
+
+  <g class="ctl" data-c="yoke"><rect class="hit" x="54" y="560" width="196" height="80"/>
+   <rect x="140" y="560" width="20" height="24" fill="#111"/>
+   <path d="M60 584h180v46h-26v-26h-128v26h-26z" fill="#141618" stroke="#000" stroke-width="1.5"/>
+   <g id="lockPin"><rect x="143" y="552" width="14" height="40" rx="2" fill="#e53935"/><text x="150" y="575" text-anchor="middle" font-size="6" fill="#fff" font-family="sans-serif" transform="rotate(-90 150 575)">LOCK</text></g>
+   <g class="ctl" data-c="etrim"><rect class="hit" x="62" y="586" width="22" height="14"/><rect x="67" y="588" width="12" height="8" rx="2" fill="#555"/></g>
+   <g class="ctl" data-c="apdisc"><rect class="hit" x="62" y="602" width="22" height="22"/><circle cx="73" cy="612" r="5.5" fill="#c62828"/></g>${lab(150,650,"CONTROL WHEEL","middle",6)}</g>
+  <g class="ctl" data-c="pedals"><rect class="hit" x="70" y="668" width="170" height="80"/><rect x="84" y="676" width="36" height="62" rx="6" fill="#141618" stroke="#454b52"/><rect x="186" y="676" width="36" height="62" rx="6" fill="#141618" stroke="#454b52"/>${lab(153,712,"PEDALS","middle",6)}</g>
+  <g id="fx"></g>
+  </svg>`;
+}
+
+let chair=null, chairTimer=null;
+function renderChair(l){
+  const h=header(l)+`<div id="chairTop"></div>
+   <div class="panelwrap" id="pwrap">${panelSVG()}</div>
+   <div class="pstatus" id="pstatus">Tap any control to see its name.</div>
+   <p class="rot">Turn your phone sideways for a bigger panel. Layout is simplified; confirm control locations in your airplane.</p>
+   ${l.mem&&l.mem<l.items.length?`<label class="toggle"><input type="checkbox" id="memonly" ${state.memOnly?"checked":""}> Memory items only</label>`:""}
+   <div class="actions"><button class="btn" id="preset">Reset panel</button></div>`;
+  $("#app").innerHTML=h;
+  $("#back").onclick=()=>{clearTimeout(chairTimer);state.view="group";render();window.scrollTo(0,0)};
+  document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{clearTimeout(chairTimer);state.mode=b.dataset.m;store.set("mode",state.mode);startMode();render()});
+  const mo=document.getElementById("memonly"); if(mo) mo.onchange=()=>{state.memOnly=mo.checked;startChair(l)};
+  $("#preset").onclick=()=>{panelReset(l);drawPanel()};
+  $("#panel").addEventListener("click",e=>panelTap(l,e));
+  startChair(l);
+}
+function startChair(l){
+  clearTimeout(chairTimer);
+  startMode(); panelReset(l); drawPanel();
+  chair={tries:0,done:false,scored:0,total:0};
+  updateChair(l);
+}
+function curItem(l){return drill.pos<drill.order.length?l.items[drill.order[drill.pos]]:null}
+function updateChair(l){
+  const top=$("#chairTop"); const it=curItem(l);
+  clearFx();
+  if(!it){
+    top.innerHTML=`<div class="card score"><div class="step">CHECKLIST COMPLETE</div><b>${chair.scored}/${chair.total}</b>
+      <div class="sub">Controls found on the first touch</div>
+      ${drill.missed.length?`<div class="missed">${drill.missed.map(i=>lineHTML(l.items[i])).join("")}</div>`:""}
+      <div class="actions"><button class="btn primary grow" id="again">Fly it again</button></div></div>`;
+    $("#again").onclick=()=>startChair(l); return;
+  }
+  const i=drill.order[drill.pos], ctl=controlFor(l,it);
+  top.innerHTML=progress()+`<div class="card drill chairc">
+    <div class="step">${ctl?"TOUCH THE CONTROL":"VERIFY OR SAY IT"}${isMem(l,i)?' · <span class="mem">MEMORY ITEM</span>':""}</div>
+    ${condHTML(it.cond)}
+    <div class="chal">${esc(it.ch)}</div>
+    <div class="resp ${chair.done||!ctl?"shown":""}" id="cresp">${chair.done||!ctl?`<div><div class="rs">${esc(it.rs)}</div>${noteHTML(it.note)}</div>`:`<span class="sub">Find it on the panel below</span>`}</div>
+    <div class="actions">${ctl
+      ?`<button class="btn grow" id="hint">Show me</button><button class="btn grow" id="skip">Skip</button>`
+      :`<button class="btn primary grow" id="done">Done</button>`}</div></div>`;
+  const on=(id,f)=>{const e=document.getElementById(id); if(e) e.onclick=f};
+  on("done",()=>advance(l));
+  on("skip",()=>{if(!drill.missed.includes(i))drill.missed.push(i);chair.total++;advance(l)});
+  on("hint",()=>{chair.tries=Math.max(chair.tries,1);showTarget(ctl,"fx-hint",true)});
+}
+function advance(l){clearTimeout(chairTimer);drill.pos++;chair.tries=0;chair.done=false;updateChair(l)}
+function chainIds(el){const ids=[];while(el&&el.id!=="panel"){if(el.dataset&&el.dataset.c)ids.push(el.dataset.c);el=el.parentNode}return ids}
+function panelTap(l,e){
+  const g=e.target.closest("[data-c]"); if(!g) return;
+  const ids=chainIds(g);
+  $("#pstatus").textContent=NAMES[ids[0]]||ids[0];
+  const it=curItem(l); if(!it||chair.done) return;
+  const ctl=controlFor(l,it); if(!ctl) return;
+  const hit=ids.find(x=>ctl.includes(x));
+  const i=drill.order[drill.pos];
+  if(hit){
+    chair.done=true; chair.total++;
+    const first=chair.tries===0; if(first) chair.scored++;
+    mark(l,i,first);
+    clearFx(); flash(g,"fx-good"); applyEffect(it,[hit,...ctl]);
+    updateChair(l);
+    chairTimer=setTimeout(()=>advance(l),1100);
+  } else {
+    chair.tries++; flash(g,"fx-bad");
+    if(chair.tries>=2) showTarget(ctl,"fx-hint",true);
+  }
+}
+function clearFx(){const fx=document.getElementById("fx"); if(fx) fx.innerHTML=""}
+function box(el,cls){
+  const hitEl=el.querySelector(":scope > .hit")||el; const b=hitEl.getBBox();
+  const r=document.createElementNS("http://www.w3.org/2000/svg","rect");
+  r.setAttribute("x",b.x-3);r.setAttribute("y",b.y-3);r.setAttribute("width",b.width+6);r.setAttribute("height",b.height+6);
+  r.setAttribute("rx",6);r.setAttribute("class",cls);document.getElementById("fx").appendChild(r);return b;
+}
+function flash(el,cls){const fx=document.getElementById("fx");[...fx.querySelectorAll(".fx-bad")].forEach(n=>n.remove());box(el,cls);if(cls==="fx-bad")setTimeout(()=>{[...fx.querySelectorAll(".fx-bad")].forEach(n=>n.remove())},700)}
+function showTarget(ctl,cls,scroll){
+  const svg=$("#panel"); let first=null;
+  [...svg.querySelectorAll(".fx-hint")].forEach(n=>n.remove());
+  ctl.forEach(id=>{const el=svg.querySelector(`[data-c="${id}"]`); if(el){const b=box(el,cls); if(!first) first=b}});
+  if(scroll&&first){const w=$("#pwrap"); const s=svg.clientWidth/1000; w.scrollTo({left:Math.max(0,(first.x+first.width/2)*s-w.clientWidth/2),behavior:"smooth"})}
+}
+
+
+const SECTIONS = {
+  checklists:{name:"Checklists", groups:["Normal","Emergency","Abnormal","Reference"], info:"Every item from your 172S G1000 checklist: normal flows, memory items, abnormals, V-speeds."},
+  maneuvers:{name:"Maneuvers", groups:["Takeoffs & Landings","Slow Flight & Stalls","Performance & Instrument","Ground Reference","Commercial"], info:"Every private and commercial maneuver from your 172S Maneuver Guide, with callouts and standards."}};
+const GROUPS = SECTIONS.checklists.groups;
+const sectionOf = g => SECTIONS.maneuvers.groups.includes(g)?"maneuvers":"checklists";
+const store = {
+  get(k,d){try{const v=localStorage.getItem("c172g:"+k);return v?JSON.parse(v):d}catch(e){return d}},
+  set(k,v){try{localStorage.setItem("c172g:"+k,JSON.stringify(v))}catch(e){}}
+};
+let mastery = store.get("mastery",{});
+// Currency: each correctly answered item starts at 100% and loses 2 percentage points per full day since it was last answered correctly.
+const DECAY_PER_DAY=2, DAY_MS=86400000;
+let lastOk = store.get("lastOk",{});
+(()=>{let ch=false;const now=Date.now();for(const k in mastery){if(mastery[k]===1&&!lastOk[k]){lastOk[k]=now;ch=true}}if(ch)store.set("lastOk",lastOk)})();
+function itemCurrency(key,now=Date.now()){ if(mastery[key]!==1||!lastOk[key]) return 0; const days=Math.floor((now-lastOk[key])/DAY_MS); return Math.max(0,100-DECAY_PER_DAY*days); }
+function record(key,ok){ mastery[key]=ok?1:0; if(ok) lastOk[key]=Date.now(); }
+function saveResults(){ store.set("mastery",mastery); store.set("lastOk",lastOk); }
+let checked = store.get("checked",{});
+let state = {view:"cover", section:null, list:null, mode:(m=>["study","arrange","order","chair"].includes(m)?m:"study")(store.get("mode","study")), memOnly:false};
+let drill = null;
+
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const listById = id => LISTS.find(l=>l.id===id);
+const isMem = (l,i) => l.mem && i < l.mem;
+function pct(l){let k=0;l.items.forEach((_,i)=>{if(mastery[l.id+":"+i]===1)k++});return Math.round(100*k/l.items.length)}
+function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function lineHTML(it){return `<div class="line"><span class="ch">${esc(it.ch)}</span><span class="lead"></span><span class="rs">${esc(it.rs)}</span></div>`}
+function noteHTML(n){ if(!n) return ""; const m=n.split(/\s*Callout:\s*/); let h="";
+  if(m[0]) h+=`<div class="sub">${esc(m[0])}</div>`; if(m[1]) h+=`<div class="callout">${esc(m[1])}</div>`; return h; }
+const condHTML = c => c ? `<div class="cond">${esc(c)}</div>` : "";
+
+
+function sectionStats(sec){let k=0,t=0,n=0;LISTS.filter(l=>sectionOf(l.group)===sec).forEach(l=>{n++;l.items.forEach((_,i)=>{t++;if(mastery[l.id+":"+i]===1)k++})});return {n,p:t?Math.round(100*k/t):0}}
+function statsFor(lists){const now=Date.now();let k=0,m=0,t=0,c=0,old=0;lists.forEach(l=>l.items.forEach((_,i)=>{t++;const key=l.id+":"+i,v=mastery[key];if(v===1){k++;const ic=itemCurrency(key,now);c+=ic;if(ic<100)old++;}else if(v===0)m++;}));
+  return {k,m,t,u:t-k-m,p:t?Math.round(100*k/t):0,cur:t?Math.round(c/t):0,old}}
+// Color by how current the learned items are (average currency of mastered items); grey if nothing learned yet.
+function curClass(st){ if(!st.k) return "cur-none"; const r=st.cur*st.t/st.k; return r>=80?"cur-ok":r>=50?"cur-warn":"cur-bad"; }
+const ICON_PROG=`<svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 27h22"/><rect x="7" y="17" width="4" height="10"/><rect x="14" y="11" width="4" height="16"/><rect x="21" y="6" width="4" height="21"/></svg>`;
+function progressTile(){const st=statsFor(LISTS);
+  return `<button class="tile big wide" id="progTile"><span class="ticon">${ICON_PROG}</span><span class="tname">Progress</span>
+  <span class="tmeta">${st.k} of ${st.t} items mastered across checklists and maneuvers${st.m?` · <span class="mem">${st.m} to review</span>`:""}</span>
+  <span class="tbar"><i style="width:${st.p}%"></i></span><span class="tpct">${st.p}% mastered · <span class="${curClass(st)}">${st.cur}% current</span></span></button>`}
+function bar3(st){const w=x=>st.t?100*x/st.t:0;return `<span class="bar3" aria-hidden="true"><i class="k" style="width:${w(st.k)}%"></i><i class="m" style="width:${w(st.m)}%"></i></span>`}
+function renderProgress(){
+  const all=statsFor(LISTS);
+  const R=46,C=2*Math.PI*R;
+  const ring=(val,frac,color,label)=>`<svg viewBox="0 0 120 120" width="112" height="112" role="img" aria-label="${val}% ${label}">
+      <circle cx="60" cy="60" r="${R}" fill="none" stroke="var(--panel-2)" stroke-width="12"/>
+      ${frac>0?`<circle cx="60" cy="60" r="${R}" fill="none" stroke="${color}" stroke-width="12" stroke-linecap="round" stroke-dasharray="${Math.max(1,C*frac)} ${C}" transform="rotate(-90 60 60)"/>`:""}
+      <text x="60" y="58" text-anchor="middle" font-size="26" fill="var(--ink)" font-family="IBM Plex Mono, monospace">${val}%</text>
+      <text x="60" y="76" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="Barlow, sans-serif">${label.toUpperCase()}</text></svg>`;
+  let h=`<div class="hdr"><div class="hdr-row"><button class="back" id="back" aria-label="Back to home">‹ Home</button><h2>Progress</h2></div></div>
+  <div class="card psum">
+    <div class="rings">${ring(all.p,all.t?all.k/all.t:0,"var(--green)","mastered")}${ring(all.cur,all.cur/100,"var(--amber)","current")}</div>
+    <div class="pstats">
+      <div><b class="k">${all.k}</b><span>Mastered</span></div>
+      <div><b class="m">${all.m}</b><span>To review</span></div>
+      <div><b>${all.u}</b><span>Not practiced</span></div>
+    </div>
+  </div>
+  <div class="legend"><span><i class="k"></i>Mastered</span><span><i class="m"></i>To review</span><span><i class="u"></i>Not practiced</span></div>
+  <p class="sub curnote">Currency: each item you get right starts at 100% and loses ${DECAY_PER_DAY} points a day until you practice it correctly again. Items never answered correctly count as 0%.</p>`;
+  const stale=LISTS.map(l=>({l,st:statsFor([l])})).filter(x=>x.st.k>0&&x.st.old>0).sort((a,b)=>(a.st.cur/a.st.p)-(b.st.cur/b.st.p)).slice(0,6);
+  if(stale.length){
+    h+=`<div class="section"><div><span class="placard amber">Losing currency</span></div><div class="lists">${stale.map(({l,st})=>
+      `<button class="listbtn" data-id="${l.id}"><span class="name">${esc(l.name)}</span><span class="pct ${curClass(st)}">${st.cur}% current</span><span class="meta">${l.group} · ${st.old} item${st.old>1?"s":""} fading</span></button>`).join("")}</div></div>`;
+  }
+  const review=LISTS.map(l=>({l,st:statsFor([l])})).filter(x=>x.st.m>0).sort((a,b)=>b.st.m-a.st.m).slice(0,6);
+  if(review.length){
+    h+=`<div class="section"><div><span class="placard red">Needs review</span></div><div class="lists">${review.map(({l,st})=>
+      `<button class="listbtn" data-id="${l.id}"><span class="name">${esc(l.name)}</span><span class="pct mem">${st.m} missed</span><span class="meta">${l.group}</span></button>`).join("")}</div></div>`;
+  }
+  Object.entries(SECTIONS).forEach(([key,sec])=>{
+    const ss=statsFor(LISTS.filter(l=>sectionOf(l.group)===key));
+    h+=`<div class="section"><div class="sechead"><span class="placard">${sec.name}</span><span class="tpct">${ss.p}% mastered · <span class="${curClass(ss)}">${ss.cur}% current</span></span></div><div class="card prog-card">`;
+    sec.groups.forEach(g=>{
+      const gl=LISTS.filter(l=>l.group===g), gs=statsFor(gl);
+      h+=`<details class="pgroup"><summary><span class="gname">${esc(g)}</span><span class="tpct">${gs.p}% · <span class="${curClass(gs)}">${gs.cur}%</span></span>${bar3(gs)}</summary><div class="prows">${gl.map(l=>{const st=statsFor([l]);
+        return `<button class="prow" data-id="${l.id}"><span class="pname">${esc(l.name)}</span><span class="tpct">${st.k}/${st.t} · <span class="${curClass(st)}">${st.cur}%</span></span>${bar3(st)}</button>`}).join("")}</div></details>`;
+    });
+    h+=`</div></div>`;
+  });
+  $("#app").innerHTML=h;
+  $("#back").onclick=()=>{state.view="cover";render();window.scrollTo(0,0)};
+  document.querySelectorAll("[data-id]").forEach(b=>b.onclick=()=>openList(b.dataset.id));
+}
+function renderCover(){
+  const tiles=Object.entries(SECTIONS).map(([k,sec])=>{const st=sectionStats(k);
+    return `<button class="tile big" data-s="${k}"><span class="ticon">${k==="checklists"?ICON_CL:ICON_MAN}</span><span class="tname">${sec.name}</span><span class="tmeta">${sec.info}</span><span class="tmeta">${st.n} ${k==="checklists"?"checklists":"maneuvers"} · ${sec.groups.length} groups</span><span class="tbar"><i style="width:${st.p}%"></i></span><span class="tpct">${st.p}% mastered</span></button>`}).join("");
+  $("#app").innerHTML=`<div class="cover">
+   <div class="hero"><svg viewBox="0 0 600 230" role="img" aria-label="Side view of a Cessna 172S Skyhawk on a runway">
+ <path d="M0 176 Q120 150 240 168 T480 160 T600 166 V230 H0Z" fill="var(--hill2)"/>
+ <path d="M0 190 Q150 172 300 186 T600 180 V230 H0Z" fill="var(--hill)"/>
+ <rect x="0" y="196" width="600" height="34" fill="var(--runway)"/>
+ <g stroke="#e9edf1" stroke-width="3" opacity=".8">${[20,110,200,290,380,470,560].map(x=>`<line x1="${x}" y1="213" x2="${x+44}" y2="213"/>`).join("")}</g>
+ <ellipse cx="300" cy="198" rx="210" ry="6" fill="#000" opacity=".22"/>
+ <g transform="translate(20 6)">
+  <!-- horizontal stabilizer (far side hint) -->
+  <path d="M40 106 L132 103 L134 110 L46 113 Z" fill="#c9d0d7"/>
+  <!-- vertical tail + dorsal fin -->
+  <path d="M215 92 Q160 86 128 60 L86 22 L56 22 L60 104 Z" fill="#f4f6f8" stroke="#8a939c" stroke-width="1.2"/>
+  <path d="M74 24 L77 102" stroke="#8a939c" stroke-width="1"/>
+  <path d="M86 22 L56 22 L58 40 L95 40 Z" fill="#b5262b"/>
+  <!-- fuselage -->
+  <path d="M60 100 L250 88 L298 70 L412 70 L448 93 L506 97 Q524 99 527 112 L527 122 Q523 135 506 137 L420 147 L300 148 L66 114 Z" fill="#f7f8fa" stroke="#8a939c" stroke-width="1.4"/>
+  <!-- livery -->
+  <path d="M66 108 L300 128 L420 128 L524 120 L524 126 L420 136 L300 137 L66 113 Z" fill="#b5262b"/>
+  <path d="M68 104 L300 122 L420 122 L525 114 L525 117 L420 126 L300 126 L68 107 Z" fill="#1f3f6b"/>
+  <!-- windows -->
+  <path d="M258 91 L298 76 L304 99 L263 101 Z" fill="#26384d"/>
+  <path d="M312 77 L398 77 L414 99 L312 100 Z" fill="#26384d"/>
+  <path d="M409 74 L444 94 L432 96 L404 78 Z" fill="#3c5672"/>
+  <path d="M357 77 L357 100" stroke="#8a939c" stroke-width="2"/>
+  <path d="M318 80 L350 80" stroke="#7d9bbb" stroke-width="2" opacity=".6"/>
+  <!-- door -->
+  <path d="M356 76 L408 76 L420 100 L420 138 L356 141 Z" fill="none" stroke="#9aa3ac" stroke-width="1.2"/>
+  <!-- cowling detail -->
+  <path d="M470 99 L472 133" stroke="#9aa3ac" stroke-width="1.2"/>
+  <ellipse cx="500" cy="131" rx="9" ry="3" fill="#3a3f45"/>
+  <!-- wing (high wing, edge-on) -->
+  <path d="M292 68 Q296 57 330 56 L420 57 Q432 59 430 66 L428 70 L292 71 Z" fill="#eef1f4" stroke="#8a939c" stroke-width="1.3"/>
+  <path d="M292 68 L305 68" stroke="#b5262b" stroke-width="3"/>
+  <!-- strut -->
+  <path d="M396 70 L352 141" stroke="#c3cad1" stroke-width="5" stroke-linecap="round"/>
+  <!-- main gear -->
+  <path d="M342 146 L322 176" stroke="#7d868f" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="320" cy="182" r="11" fill="#1d2024"/><circle cx="320" cy="182" r="4" fill="#8a939c"/>
+  <path d="M296 182 Q298 166 322 165 Q344 166 346 180 L340 182 Q336 172 320 172 Q306 172 302 182 Z" fill="#f4f6f8" stroke="#8a939c"/>
+  <!-- nose gear -->
+  <path d="M498 137 L502 160" stroke="#7d868f" stroke-width="5"/>
+  <path d="M496 150 L506 150" stroke="#7d868f" stroke-width="3"/>
+  <circle cx="503" cy="181" r="9" fill="#1d2024"/><circle cx="503" cy="181" r="3.5" fill="#8a939c"/>
+  <path d="M488 180 Q490 164 503 163 Q518 164 520 178 L514 180 Q512 171 503 171 Q495 171 493 180 Z" fill="#f4f6f8" stroke="#8a939c"/>
+  <path d="M502 160 L503 172" stroke="#7d868f" stroke-width="4"/>
+  <!-- spinner + prop disc -->
+  <path d="M527 108 Q544 112 546 117 Q544 122 527 126 Z" fill="#e8ebee" stroke="#8a939c"/>
+  <ellipse cx="546" cy="117" rx="4" ry="58" fill="#fff" opacity=".22"/>
+  <path d="M545 62 Q549 90 546 117 Q543 144 547 172" stroke="#2a2e33" stroke-width="3" opacity=".35" fill="none"/>
+ </g>
+</svg><span class="tag">CESSNA 172S · G1000</span></div>
+   <div><div class="kicker">Cessna 172S Skyhawk</div><h1>Checklist and Procedure Trainer</h1></div>
+   <div class="tiles">${tiles}${progressTile()}</div>
+   <div><button class="btn" id="resetAll">Reset all progress</button></div></div>`;
+  document.querySelectorAll(".tile[data-s]").forEach(b=>b.onclick=()=>{state.view="group";state.section=b.dataset.s;render();window.scrollTo(0,0)});
+  $("#progTile").onclick=()=>{state.view="progress";render();window.scrollTo(0,0)};
+  const r=$("#resetAll"); let armed=false;
+  r.onclick=()=>{if(!armed){armed=true;r.textContent="Tap again to confirm";r.classList.add("bad");return}
+    mastery={};lastOk={};checked={};saveResults();store.set("checked",checked);renderCover()};
+}
+function renderHome(){
+  const key=state.section||"checklists", sec=SECTIONS[key];
+  let h=`<div class="hdr"><div class="hdr-row"><button class="back" id="back" aria-label="Back to home">‹ Home</button><h2>${sec.name}</h2></div></div>`;
+  const sp=[["VSO","40"],["VX","62"],["VY","74"],["Glide","68"]];
+  h+=`<div class="speeds" style="margin-top:6px">${sp.map(s=>`<div class="spd"><b>${s[1]}</b><span>${s[0]} KIAS</span></div>`).join("")}</div>`;
+  if(key==="maneuvers") h+=`<p class="sub" style="margin:10px 0 0">From your Cessna 172S Maneuver Guide (revision 11/02/2024). Callouts appear in quotes.</p>`;
+  sec.groups.forEach(g=>{
+    h+=`<div class="section"><div><span class="placard ${g==="Emergency"?"red":""}">${g}</span></div><div class="lists">`;
+    LISTS.filter(l=>l.group===g).forEach(l=>{
+      const p=pct(l);
+      h+=`<button class="listbtn" data-id="${l.id}"><span class="name">${esc(l.name)}</span>
+      <span class="pct"><span class="gauge"><i style="width:${p}%"></i></span>${p}%</span>
+      <span class="meta">${l.items.length} ${l.man?"steps":"items"}${(st=>st.k?` · <span class="${curClass(st)}">${st.cur}% current</span>`:"")(statsFor([l]))}${l.flow?" · Flow":""}${l.mem?` · <span class="mem">${l.mem===l.items.length?"All memory items":l.mem+" memory items"}</span>`:""}</span></button>`;
+    });
+    h+=`</div></div>`;
+  });
+  $("#app").innerHTML=h;
+  $("#back").onclick=()=>{state.view="cover";render();window.scrollTo(0,0)};
+  document.querySelectorAll(".listbtn").forEach(b=>b.onclick=()=>openList(b.dataset.id));
+}
+
+const ICON_CL=`<svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="5" width="18" height="24" rx="2"/><path d="M12 3h8v4h-8z"/><path d="M11 14l2 2 3-4M18 14h4M11 22l2 2 3-4M18 22h4"/></svg>`;
+const ICON_MAN=`<svg viewBox="0 0 32 32" width="30" height="30" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22c4-10 10-14 16-12s6 8 0 10-10-2-8-6"/><path d="M24 6l4 2-3 3"/></svg>`;
+function openList(id){state.view="list";state.list=id;state.section=sectionOf(listById(id).group);state.memOnly=false;startMode();render();window.scrollTo(0,0)}
+function startMode(){
+  const l=listById(state.list);
+  let order=l.items.map((_,i)=>i);
+  if(state.memOnly&&l.mem) order=order.slice(0,l.mem);
+  drill={order,pos:0,missed:[],answered:null,opts:null};
+  // Arrange: split into parts of ~10 so long lists fit on a phone
+  const n=order.length, parts=n<=12?1:Math.ceil(n/10), size=Math.ceil(n/parts);
+  const chunks=[]; for(let k=0;k<n;k+=size) chunks.push(order.slice(k,k+size));
+  arr={chunks,ci:0,score:0,total:0}; arrStart();
+}
+
+function header(l){
+  const m=state.mode;
+  let banner="";
+  if(l.mem) banner=`<div class="banner">${l.mem===l.items.length?"Every item here is a memory item.":`The first ${l.mem} items are memory items (dashed box).`}</div>`;
+  return `<div class="hdr"><div class="hdr-row"><button class="back" id="back" aria-label="Back to checklists">‹ Back</button><h2>${esc(l.name)}</h2></div>
+  <div class="seg" role="group" aria-label="Mode">
+    <button data-m="study" aria-pressed="${m==="study"}">Checklist</button>
+    <button data-m="arrange" aria-pressed="${m==="arrange"}">Arrange</button>
+    <button data-m="order" aria-pressed="${m==="order"}">Sequence</button>
+    <button data-m="chair" aria-pressed="${m==="chair"}">Chair Fly</button>
+  </div>${banner}</div>`;
+}
+
+function renderList(){
+  const l=listById(state.list);
+  if(state.mode==="chair") return renderChair(l);
+  let h=header(l);
+  if(state.mode==="study") h+=studyHTML(l);
+  else if(state.mode==="arrange") h+=arrangeHTML(l);
+  else if(drill.pos>=drill.order.length) h+=doneHTML(l);
+  else h+=orderHTML(l);
+  if(state.mode!=="study"&&l.mem&&l.mem<l.items.length)
+    h+=`<label class="toggle" style="margin-top:10px"><input type="checkbox" id="memonly" ${state.memOnly?"checked":""}> Memory items only</label>`;
+  $("#app").innerHTML=h;
+  $("#back").onclick=()=>{state.view="group";render();window.scrollTo(0,0)};
+  document.querySelectorAll(".seg button").forEach(b=>b.onclick=()=>{state.mode=b.dataset.m;store.set("mode",state.mode);startMode();render()});
+  bind(l);
+}
+
+function studyHTML(l){
+  const c=checked[l.id]||[];
+  const n=c.filter(Boolean).length;
+  let rows="", lastCond=null, inMem=false;
+  l.items.forEach((it,i)=>{
+    if(it.cond!==lastCond){ if(it.cond) rows+=`<div class="cond-row">${esc(it.cond)}</div>`; lastCond=it.cond; }
+    rows+=`<button class="row ${c[i]?"done":""} ${isMem(l,i)?"memrow":""}" data-i="${i}"><span class="box"></span><span style="min-width:0">${lineHTML(it)}${noteHTML(it.note)}</span></button>`;
+  });
+  return `<div class="prog"><span>${n} / ${l.items.length} checked</span><span>Tap an item to check it</span></div><div class="bar" style="margin-bottom:12px"><i style="width:${100*n/l.items.length}%"></i></div>
+  ${l.std?`<div class="std"><span class="step">STANDARDS</span>${l.std.map(([k,v])=>`<div><b>${esc(k)}:</b> ${esc(v)}</div>`).join("")}</div>`:""}<div class="card">${rows}<div class="complete">${esc(l.name)}${l.man?"":" checklist"} <span class="lead"></span> COMPLETE</div></div>
+  <div class="actions"><button class="btn" id="clr">Clear checks</button><span class="grow"></span><button class="btn primary" id="go">Practice the order</button></div>`;
+}
+
+function progress(){
+  const p=drill.pos, t=drill.order.length;
+  return `<div class="prog"><span>Item ${p+1} of ${t}</span><span>${drill.missed.length} missed</span></div><div class="bar" style="margin-bottom:12px"><i style="width:${100*p/t}%"></i></div>`;
+}
+
+let arr=null;
+function arrStart(){ const c=arr.chunks[arr.ci]; arr.placed=[]; arr.pool=shuffle(c); while(c.length>1&&arr.pool.every((x,k)=>x===c[k])) arr.pool=shuffle(c); arr.checked=false; }
+const ikey=it=>(it.ch+"|"+it.rs).toLowerCase();
+function arrangeHTML(l){
+  if(arr.ci>=arr.chunks.length){
+    return `<div class="card score"><div class="step">CHECKLIST COMPLETE</div><b>${arr.score}/${arr.total}</b>
+    <div class="sub">Items placed in the right position</div>
+    <div class="actions"><button class="btn grow" id="study">View checklist</button><button class="btn primary grow" id="arrAgain">Arrange again</button></div></div>`;
+  }
+  const chunk=arr.chunks[arr.ci], first=chunk[0], prevIdx=arr.ci>0?arr.chunks[arr.ci-1].slice(-1)[0]:null;
+  const parts=arr.chunks.length;
+  let right=0;
+  const slots=chunk.map((exp,k)=>{
+    const p=arr.placed[k];
+    if(p===undefined) return `<div class="slot empty"><span class="num">${k+1}</span><span class="sub">${k===arr.placed.length?"Tap the next item below":""}</span></div>`;
+    const it=l.items[p];
+    let cls="", fix="";
+    if(arr.checked){ const ok=ikey(it)===ikey(l.items[exp]); if(ok) right++; cls=ok?"right":"wrong";
+      if(!ok) fix=`<div class="fix">Should be: ${esc(l.items[exp].ch)} — ${esc(l.items[exp].rs)}</div>`; }
+    return `<button class="slot ${cls}" data-k="${k}" ${arr.checked?"disabled":""}><span class="num">${k+1}</span><span style="min-width:0;flex:1">${it.cond?`<div class="cond sm">${esc(it.cond)}</div>`:""}${lineHTML(it)}${fix}</span></button>`;
+  }).join("");
+  const pool=arr.pool.map(i=>{const it=l.items[i];return `<button class="opt chip" data-i="${i}">${it.cond?`<div class="cond sm">${esc(it.cond)}</div>`:""}<div class="ch">${esc(it.ch)}</div><div class="rs">${esc(it.rs)}</div></button>`}).join("");
+  const done=arr.placed.length===chunk.length;
+  return `<div class="prog"><span>${parts>1?`Part ${arr.ci+1} of ${parts} · items ${drill.order.indexOf(first)+1}–${drill.order.indexOf(first)+chunk.length}`:`${chunk.length} items`}</span><span>${arr.total?`${arr.score}/${arr.total} so far`:""}</span></div>
+  <div class="bar" style="margin-bottom:12px"><i style="width:${100*arr.ci/parts}%"></i></div>
+  <div class="card arr">
+    <div class="step">${arr.checked?`${right} OF ${chunk.length} IN THE RIGHT PLACE`:"PUT THESE IN ORDER"}</div>
+    <div class="prev">${prevIdx!==null?`Comes after: ${esc(l.items[prevIdx].ch)} — ${esc(l.items[prevIdx].rs)}`:"Start of checklist"}</div>
+    <div class="slots">${slots}</div>
+    ${!arr.checked&&arr.placed.length?`<div class="sub">Tap a placed item to send it back.</div>`:""}
+    <div class="actions">${arr.checked
+      ?`<button class="btn grow" id="arrRetry">Try this part again</button><button class="btn primary grow" id="arrNext">${arr.ci+1<parts?"Next part":"Finish"}</button>`
+      :done?`<button class="btn grow" id="arrClear">Start over</button><button class="btn primary grow" id="arrCheck">Check order</button>`
+      :arr.placed.length?`<button class="btn" id="arrUndo">Undo</button>`:""}</div>
+  </div>
+  ${arr.pool.length?`<div class="pool-h">Items to place · ${arr.pool.length} left</div><div class="opts">${pool}</div>`:""}`;
+}
+function bindArrange(l){
+  const on=(id,f)=>{const e=document.getElementById(id); if(e) e.onclick=f};
+  document.querySelectorAll(".chip").forEach(b=>b.onclick=()=>{const i=+b.dataset.i; arr.pool.splice(arr.pool.indexOf(i),1); arr.placed.push(i); renderList()});
+  document.querySelectorAll(".slot[data-k]").forEach(b=>b.onclick=()=>{ if(arr.checked) return; const k=+b.dataset.k; const [i]=arr.placed.splice(k,1); arr.pool.push(i); renderList()});
+  on("arrUndo",()=>{arr.pool.push(arr.placed.pop());renderList()});
+  on("arrClear",()=>{arrStart();renderList()});
+  on("arrCheck",()=>{
+    arr.checked=true; const c=arr.chunks[arr.ci];
+    c.forEach((exp,k)=>{const ok=ikey(l.items[arr.placed[k]])===ikey(l.items[exp]); record(l.id+":"+exp,ok); if(ok)arr.score++; arr.total++;});
+    saveResults(); renderList();
+  });
+  on("arrRetry",()=>{ const c=arr.chunks[arr.ci]; c.forEach((exp,k)=>{ if(ikey(l.items[arr.placed[k]])===ikey(l.items[exp])) arr.score--; arr.total--; }); arrStart(); renderList()});
+  on("arrNext",()=>{arr.ci++; if(arr.ci<arr.chunks.length) arrStart(); renderList(); window.scrollTo(0,0)});
+  on("arrAgain",()=>{startMode();renderList()});
+}
+
+function makeOpts(l){
+  const i=drill.order[drill.pos], key=s=>(s.ch+"|"+s.rs).toLowerCase();
+  const pool=[]; const seen=new Set([key(l.items[i])]);
+  const add=it=>{if(!seen.has(key(it))){seen.add(key(it));pool.push(it)}};
+  shuffle(l.items.slice(i+1)).forEach(add);
+  shuffle(l.items.slice(0,i)).forEach(add);
+  shuffle(LISTS.filter(x=>x.group===l.group&&x.id!==l.id).flatMap(x=>x.items)).forEach(add);
+  return shuffle([{it:l.items[i],ok:true},...pool.slice(0,3).map(it=>({it,ok:false}))]);
+}
+
+function orderHTML(l){
+  if(!drill.opts) drill.opts=makeOpts(l);
+  const i=drill.order[drill.pos];
+  const done=drill.order.slice(0,drill.pos).map(k=>l.items[k]).slice(-2);
+  return progress()+`<div class="card drill">
+    <div class="step">WHAT COMES NEXT?${isMem(l,i)?' · <span class="mem">MEMORY ITEM</span>':""}</div>
+    ${drill.pos===0?`<div class="prev">Start of checklist</div>`:done.map(it=>`<div class="prev">✓ ${esc(it.ch)} — ${esc(it.rs)}</div>`).join("")}
+    ${condHTML(l.items[i].cond)}
+    <div class="opts">${drill.opts.map((o,k)=>{
+      let cls=""; if(drill.answered!==null){ if(o.ok) cls="right"; else if(k===drill.answered) cls="wrong"; }
+      return `<button class="opt ${cls}" data-k="${k}" ${drill.answered!==null?"disabled":""}><div class="ch">${esc(o.it.ch)}</div><div class="rs">${esc(o.it.rs)}</div></button>`}).join("")}</div>
+    ${drill.answered!==null?`<div class="actions"><button class="btn primary grow" id="next">Next item</button></div>`:""}
+  </div>`;
+}
+
+function doneHTML(l){
+  const t=drill.order.length, ok=t-drill.missed.length;
+  return `<div class="card score"><div class="step">CHECKLIST COMPLETE</div><b>${ok}/${t}</b>
+  <div class="sub">${ok===t?"Clean run. Run it again tomorrow to keep it fresh.":"Review the items you missed, then run it again."}</div>
+  ${drill.missed.length?`<div class="missed">${drill.missed.map(i=>lineHTML(l.items[i])).join("")}</div>`:""}
+  <div class="actions"><button class="btn grow" id="study">View checklist</button><button class="btn primary grow" id="again">Run again</button></div></div>`;
+}
+
+function mark(l,i,ok){
+  record(l.id+":"+i,ok); saveResults();
+  if(!ok&&!drill.missed.includes(i)) drill.missed.push(i);
+}
+
+function bind(l){
+  document.querySelectorAll(".row").forEach(r=>r.onclick=()=>{
+    const c=checked[l.id]||(checked[l.id]=[]); const i=+r.dataset.i; c[i]=!c[i]; store.set("checked",checked); renderList();
+  });
+  const on=(id,f)=>{const e=document.getElementById(id); if(e) e.onclick=f};
+  on("clr",()=>{checked[l.id]=[];store.set("checked",checked);renderList()});
+  on("go",()=>{state.mode="arrange";store.set("mode","arrange");startMode();renderList()});
+  on("next",()=>{drill.pos++;drill.answered=null;drill.opts=null;renderList()});
+  on("again",()=>{startMode();renderList()});
+  on("study",()=>{state.mode="study";store.set("mode","study");renderList()});
+  if(state.mode==="arrange") bindArrange(l);
+  const mo=document.getElementById("memonly"); if(mo) mo.onchange=()=>{state.memOnly=mo.checked;startMode();renderList()};
+  document.querySelectorAll(".opt:not(.chip)").forEach(b=>b.onclick=()=>{
+    if(drill.answered!==null) return; const k=+b.dataset.k; drill.answered=k;
+    mark(l,drill.order[drill.pos],drill.opts[k].ok); renderList();
+  });
+}
+
+function render(){ state.view==="cover"?renderCover():state.view==="progress"?renderProgress():state.view==="group"?renderHome():renderList() }
+render();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => { navigator.serviceWorker.register("sw.js").catch(() => {}); });
+}
+</script>
+</body>
+</html>
